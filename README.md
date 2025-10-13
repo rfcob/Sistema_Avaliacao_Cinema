@@ -1,2 +1,2 @@
-# Sistema_Avaliacao_Cinema
+# Sistema Avaliacao Cinema
 Sistema de avaliação para cinemas
