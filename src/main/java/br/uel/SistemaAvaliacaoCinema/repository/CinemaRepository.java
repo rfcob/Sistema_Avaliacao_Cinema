@@ -48,11 +48,22 @@ public class CinemaRepository {
     }
 
     //Busca um cinema específico pelo seu ID.
-
     public Optional<Cinema> findById(Long id) {
         String sql = "SELECT * FROM Cinema WHERE id_cinema = ?";
         try {
             Cinema cinema = jdbcTemplate.queryForObject(sql, new Object[]{id}, new CinemaRowMapper());
+            return Optional.of(cinema);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+
+    //Implmentar?
+    public Optional<Cinema> findByNome(String nome) {
+        String sql = "SELECT * FROM Cinema WHERE nome = ?";
+        try {
+            Cinema cinema = jdbcTemplate.queryForObject(sql, new Object[]{nome}, new CinemaRowMapper());
             return Optional.of(cinema);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
