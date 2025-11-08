@@ -34,7 +34,38 @@ public class CinemaController {
         return "redirect:/cinema";
     }
 
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
+        try {
+            Cinema cinema = cinemaService.buscarCinemaPorId(id);
+            model.addAttribute("cinema", cinema);
+            model.addAttribute("tituloPagina", "Editar Cinema: " + cinema.getNome());
+            return "cinema/form_Cinema";
+        } catch (RuntimeException e) {
+            return "redirect:/cinema";
+        }
+    }
 
+    @PutMapping("/{id}")
+    public String atualizarCinema(@PathVariable Long id, Cinema cinema, RedirectAttributes ra) {
+        try {
+            cinemaService.atualizarCinema(id, cinema);
+            ra.addFlashAttribute("success", "Cinema atualizado com sucesso!");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", "Erro ao atualizar cinema: " + e.getMessage());
+        }
+        return "redirect:/cinema";
+    }
 
+    @DeleteMapping("/{id}")
+    public String deletarCinema(@PathVariable Long id, RedirectAttributes ra) {
+        try {
+            cinemaService.deletarCinema(id);
+            ra.addFlashAttribute("success", "Cinema excluído com sucesso!");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", "Erro ao excluir cinema: " + e.getMessage());
+        }
+        return "redirect:/cinema";
+    }
 
 }
