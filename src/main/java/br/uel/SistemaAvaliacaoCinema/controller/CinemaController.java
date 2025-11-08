@@ -23,6 +23,12 @@ public class CinemaController {
         return "cinema/form_Cinema";
     }
 
+    @GetMapping
+    public String listarCinemas(Model model) {
+        model.addAttribute("cinemas", cinemaService.listarCinemas());
+        return "cinema/lista_Cinema";
+    }
+
     @PostMapping
     public String salvarCinema(Cinema cinema, RedirectAttributes ra) {
         try {
