@@ -25,6 +25,17 @@ public class CinemaService {
         return cinemaRepository.findByNome(nome).orElseThrow( () -> new RuntimeException("Cinema não cadastrado"));
     }
 
+    public void cadastrarCinema(Cinema cinema) {
+        cinemaRepository.save(cinema);
+    }
 
+    public void atualizarCinema(Long id, Cinema cinema) {
+        cinema.setIdCinema(id);
+        cinemaRepository.update(cinema);
+    }
+
+    public void deletarCinema(Long id) {
+        cinemaRepository.deleteById(id);
+    }
 
 }
