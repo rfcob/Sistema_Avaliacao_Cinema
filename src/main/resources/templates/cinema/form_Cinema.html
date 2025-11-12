@@ -25,14 +25,23 @@
             <label for="nome" class="form-label">Nome:</label>
             <input type="text" class="form-control" th:field="*{nome}" id="nome" required>
         </div>
+
         <div class="mb-3">
             <label for="localizacao" class="form-label">Localização:</label>
             <input type="text" class="form-control" th:field="*{localizacao}" id="localizacao">
         </div>
+
         <div class="mb-3">
             <label for="tipoEstabelecimento" class="form-label">Tipo de Estabelecimento:</label>
-            <input type="text" class="form-control" th:field="*{tipoEstabelecimento}" id="tipoEstabelecimento" placeholder="shopping, galeria, rua, etc.">
+            <select class="form-select" th:field="*{tipoEstabelecimento}" id="tipoEstabelecimento" required>
+                <option value="" th:text="'--- Selecione um tipo ---'"></option>
+                <option value="shopping">Shopping</option>
+                <option value="galeria">Galeria</option>
+                <option value="cinema de rua">Cinema de Rua</option>
+            </select>
         </div>
+
+
         <div class="mb-3">
             <label for="numeroSalas" class="form-label">Número de Salas:</label>
             <input type="number" class="form-control" th:field="*{numeroSalas}" id="numeroSalas">
