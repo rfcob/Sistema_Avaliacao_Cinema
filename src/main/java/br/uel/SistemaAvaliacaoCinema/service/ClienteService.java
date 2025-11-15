@@ -1,5 +1,6 @@
 package br.uel.SistemaAvaliacaoCinema.service;
 
+import br.uel.SistemaAvaliacaoCinema.model.Cinema;
 import br.uel.SistemaAvaliacaoCinema.model.Cliente;
 import br.uel.SistemaAvaliacaoCinema.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,13 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     public List<Cliente> listarClientes() {
+
         return clienteRepository.findAll();
     }
 
+    public Cliente buscarClientePorId(Long id) {
+        return clienteRepository.findById(id).orElseThrow( () -> new RuntimeException("Cinema não cadastrado"));
+    }
 }
 
 

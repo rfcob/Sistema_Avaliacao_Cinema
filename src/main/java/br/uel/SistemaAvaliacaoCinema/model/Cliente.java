@@ -1,20 +1,23 @@
 package br.uel.SistemaAvaliacaoCinema.model;
 
+import java.time.LocalDate;
+
 public class Cliente {
 
-    // Atributos
-    private Long idCliente;   //chave primaria
+    private Long idCliente;
     private String nome;
     private String cpf;
+    private String email;
     private String rua;
     private String bairro;
     private String cidade;
     private String estado;
     private String cep;
-    private String numeroCasa;
+    private String numero;
     private String telefone;
+    private LocalDate dataNascimento;
+    private boolean ativo;
 
-    //contrutor vazio
     public Cliente(){
 
     }
@@ -24,12 +27,16 @@ public class Cliente {
         return idCliente;
     }
 
-    public String getNome(){
+    public String getNome_Cliente(){
         return nome;
     }
 
     public String getCpf_Cliente() {
         return cpf;
+    }
+
+    public String getEmail_Cliente(){
+        return email;
     }
 
     public String getRua_Cliente() {
@@ -56,12 +63,19 @@ public class Cliente {
     }
 
     public String getNumeroCasa_Cliente() {
-        return numeroCasa;
+        return numero;
+    }
+
+    public LocalDate getDataNascimento_Cliente() {
+        return dataNascimento;
+    }
+
+    public boolean isAtivo_Cliente() {
+        return ativo;
     }
 
 
     //Setters
-
     public void setId_cliente(Long idCliente){
         this.idCliente = idCliente;
     }
@@ -73,6 +87,8 @@ public class Cliente {
     public void setCpf_Cliente(String cpf){
         this.cpf = cpf;
     }
+
+    public void setEmail_Cliente(String email){this.email = email;}
 
     public void setRua_Cliente(String rua){
         this.rua = rua;
@@ -94,14 +110,19 @@ public class Cliente {
         this.cep = cep;
     }
 
-    public void setNumeroCasa_Cliente(String numeroCasa){
-        this.numeroCasa = numeroCasa;
+    public void setNumeroCasa_Cliente(String numero){
+        this.numero = numero;
     }
 
     public void setTelefone(String telefone){
         this.telefone = telefone;
     }
 
+    public void setDataNascimento_Cliente(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
 
+    public void setAtivo_Cliente(boolean ativo) {
+        this.ativo = ativo;
+    }
 }
-
