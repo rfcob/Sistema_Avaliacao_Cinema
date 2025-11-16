@@ -5,20 +5,31 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * Controlador para lidar com rotas de navegação globais,
- * como a página inicial.
+ * como a página inicial e o dashboard principal.
  */
 @Controller
 public class HomeController {
 
+    /**
+     * Redireciona a rota raiz (/) para o dashboard.
+     */
     @GetMapping("/")
-    public String paginaInicial() {
-        // Redireciona para a tua lista de filmes
-        return "redirect:/cinema";
+    public String rootRedirect() {
+        return "redirect:/dashboard";
     }
 
-    // (Opcional) Podes adicionar um /index também, se quiseres
+    /**
+     * Mostra a página principal do dashboard.
+     * Procura o ficheiro: templates/dashboard.html
+     */
+    @GetMapping("/dashboard")
+    public String dashboardPage() {
+        return "dashboard";
+    }
+
+    // (O /index agora é opcional, mas podemos mantê-lo a redirecionar)
     @GetMapping("/index")
     public String paginaIndex() {
-        return "redirect:/cinema";
+        return "redirect:/dashboard";
     }
 }

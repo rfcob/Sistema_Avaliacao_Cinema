@@ -19,98 +19,97 @@ public class Cliente {
     private boolean ativo;
 
     public Cliente(){
-
     }
 
     // Getters
-    public Long getId_cliente(){
+    public Long getIdCliente(){
         return idCliente;
     }
 
-    public String getNome_Cliente(){
+    public String getNomeCliente(){
         return nome;
     }
 
-    public String getCpf_Cliente() {
+    public String getCpfCliente() {
         return cpf;
     }
 
-    public String getEmail_Cliente(){
+    public String getEmailCliente(){
         return email;
     }
 
-    public String getRua_Cliente() {
+    public String getRuaCliente() {
         return rua;
     }
 
-    public String getBairro_Cliente() {
+    public String getBairroCliente() {
         return bairro;
     }
-    public String getCidade_Cliente() {
+    public String getCidadeCliente() {
         return cidade;
     }
 
-    public String getEstado_Cliente() {
+    public String getEstadoCliente() {
         return estado;
     }
 
-    public String getCep_Cliente() {
+    public String getCepCliente() {
         return cep;
     }
 
-    public String getTelefone_Cliente() {
+    public String getTelefoneCliente() {
         return telefone;
     }
 
-    public String getNumeroCasa_Cliente() {
+    public String getNumeroCasaCliente() {
         return numero;
     }
 
-    public LocalDate getDataNascimento_Cliente() {
+    public LocalDate getDataNascimentoCliente() {
         return dataNascimento;
     }
 
-    public boolean isAtivo_Cliente() {
+    public boolean isAtivoCliente() {
         return ativo;
     }
 
 
     //Setters
-    public void setId_cliente(Long idCliente){
+    public void setIdcliente(Long idCliente){
         this.idCliente = idCliente;
     }
 
-    public void setNome(String nome){
+    public void setNomeCliente(String nome){
         this.nome = nome;
     }
 
-    public void setCpf_Cliente(String cpf){
+    public void setCpfCliente(String cpf){
         this.cpf = cpf;
     }
 
-    public void setEmail_Cliente(String email){this.email = email;}
+    public void setEmailCliente(String email){this.email = email;}
 
-    public void setRua_Cliente(String rua){
+    public void setRuaCliente(String rua){
         this.rua = rua;
     }
 
-    public  void setBairro_Cliente(String bairro){
+    public  void setBairroCliente(String bairro){
         this.bairro = bairro;
     }
 
-    public void setCidade_Cliente(String cidade){
+    public void setCidadeCliente(String cidade){
         this.cidade = cidade;
     }
 
-    public void setEstado_Cliente(String estado){
+    public void setEstadoCliente(String estado){
         this.estado = estado;
     }
 
-    public void setCep_Cliente(String cep){
+    public void setCepCliente(String cep){
         this.cep = cep;
     }
 
-    public void setNumeroCasa_Cliente(String numero){
+    public void setNumeroCasaCliente(String numero){
         this.numero = numero;
     }
 
@@ -118,11 +117,11 @@ public class Cliente {
         this.telefone = telefone;
     }
 
-    public void setDataNascimento_Cliente(LocalDate dataNascimento) {
+    public void setDataNascimentoCliente(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
-    public void setAtivo_Cliente(boolean ativo) {
+    public void setAtivoCliente(boolean ativo) {
         this.ativo = ativo;
     }
 }
