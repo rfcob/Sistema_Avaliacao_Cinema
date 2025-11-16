@@ -1,0 +1,49 @@
+body {
+    padding-top: 56px;
+    background-color: #f8f9fa;
+}
+
+.titulo-pagina {
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.formulario-filtro {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 15px;
+}
+
+.botao-filtro {
+    margin-top: 30px;
+}
+
+.botoes-acoes {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.botao-acao {
+    min-width: 120px;
+}
+
+.tabela-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.tabela-sessoes th,
+.tabela-sessoes td {
+    vertical-align: middle;
+}
+
+.col-acoes {
+    width: 160px;
+    text-align: center;
+}
+
+.acoes-tabela {
+    flex-wrap: wrap;
+}
