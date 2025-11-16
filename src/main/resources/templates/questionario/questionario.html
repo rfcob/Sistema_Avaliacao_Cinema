@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Avaliação de Cinema</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        form { max-width: 700px; }
+        h3 { border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+        h4 { margin-bottom: 5px; }
+        p { margin-top: 0; font-size: 0.9em; color: #555; }
+        div { margin-bottom: 20px; }
+        hr { border: 0; border-top: 1px solid #eee; }
+        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        textarea { width: 100%; }
+        .radio-group label { margin-right: 15px; }
+        .radio-group input { margin-right: 5px; }
+
+        /* Estilo para o checkbox */
+        .checkbox-group { margin-top: 10px; }
+        .checkbox-group input { margin-right: 5px; }
+
+    </style>
+</head>
+<body>
+
+<h1>Avalie sua Experiência</h1>
+
+<form th:object="${formulario}" th:action="@{/questionario/salvar}" method="post">
+
+    <input type="hidden" th:field="*{idCliente}" />
+    <input type="hidden" th:field="*{idSessao}" />
+
+
+    <h3>Deixe um Comentário (Opcional)</h3>
+    <div>
+        <textarea th:field="*{comentario}" rows="4" cols="50" placeholder="O que você achou?"></textarea>
+
+        <div class="checkbox-group">
+            <input type="checkbox" th:field="*{comentarioAnonimo}" id="anonimo" />
+            <label for="anonimo">Quero que meu comentário seja anônimo</label>
+        </div>
+    </div>
+
+    <hr>
+
+    <h3>Critérios de Avaliação (0 = Muito Ruim, 5 = Excelente)</h3>
+
+    <div th:each="resp, stat : *{respostas}">
+
+        <h4 th:text="${resp.criterio.nomeCriterio}">Nome do Critério</h4>
+        <p th:text="${resp.criterio.descricao}">Descrição do Critério</p>
+
+        <input type="hidden" th:field="*{respostas[__${stat.index}__].criterio.idCriterio}" />
+
+        <div class="radio-group">
+                <span th:each="i : ${ {0, 1, 2, 3, 4, 5} }">
+                    <input type="radio"
+                           th:field="*{respostas[__${stat.index}__].nota}"
+                           th:value="${i}"
+                           th:id="${'nota-' + stat.index + '-' + i}"
+                           required />
+                    <label th:for="${'nota-' + stat.index + '-' + i}" th:text="${i}"></label>
+                </span>
+        </div>
+        <hr>
+    </div>
+
+    <button type="submit">Enviar Avaliação</button>
+</form>
+
+</body>
+</html>

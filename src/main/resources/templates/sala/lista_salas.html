@@ -57,14 +57,14 @@
             <td colspan="6">Nenhuma sala encontrada.</td>
         </tr>
         <tr th:each="sala : ${salas}">
-            <td th:text="${sala.numSala}"></td>
+            <td th:text="${sala.idSala}"></td>
             <td th:text="${sala.nomeCinema}"></td>
             <td th:text="${sala.capacidade}"></td>
             <td th:text="${sala.tipoSala}"></td>
             <td th:text="${sala.tecnologia}"></td>
             <td class="table-actions">
-                <a th:href="@{/cineSalas/editar/{id}(id=${sala.numSala})}" class="btn btn-sm btn-warning">Editar</a>
-                <form th:action="@{/cineSalas/{id}(id=${sala.numSala})}" th:method="delete" onsubmit="return confirm('Tem certeza? Excluir uma sala pode falhar se ela tiver sessões agendadas.');">
+                <a th:href="@{/cineSalas/editar/{id}(id=${sala.idSala})}" class="btn btn-sm btn-warning">Editar</a>
+                <form th:action="@{/cineSalas/{id}(id=${sala.idSala})}" th:method="delete" onsubmit="return confirm('Tem certeza? Excluir uma sala pode falhar se ela tiver sessões agendadas.');">
                     <input type="hidden" name="_method" value="delete" />
                     <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
                 </form>

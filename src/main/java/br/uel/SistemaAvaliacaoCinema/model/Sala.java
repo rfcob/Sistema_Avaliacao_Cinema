@@ -2,26 +2,24 @@ package br.uel.SistemaAvaliacaoCinema.model;
 
 public class Sala {
 
-    private Long numSala; // Chave Primária
+    private Long idSala; // PK
     private Integer capacidade;
     private String tipoSom;
     private String formatoExibicao;
     private String tecnologia;
     private String tipoSala;
     private boolean ativo = true;
+    private Long idCinema;// FK
 
-    // Chave Estrangeira
-    private Long idCinema;
-
-    // Campo extra (não vem da tabela Sala) para armazenar o nome do Cinema (via JOIN)
+    // Campo extra (via JOIN)
     private String nomeCinema;
 
 
     // Getters
 
 
-    public Long getNumSala() {
-        return numSala;
+    public Long getIdSala() {
+        return idSala;
     }
 
     public Integer getCapacidade() {
@@ -58,9 +56,8 @@ public class Sala {
 
     //Setters
 
-
-    public void setNumSala(Long numSala) {
-        this.numSala = numSala;
+    public void setIdSala(Long idSala) {
+        this.idSala = idSala;
     }
 
     public void setCapacidade(Integer capacidade) {

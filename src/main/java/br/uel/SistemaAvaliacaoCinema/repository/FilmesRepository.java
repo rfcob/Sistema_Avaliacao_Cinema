@@ -26,7 +26,6 @@ public class FilmesRepository {
         @Override
         public Filme mapRow(ResultSet rs, int rowNum) throws SQLException {
             Filme filme = new Filme();
-            // Mapeia colunas do SQL  para os setters do POJO
             filme.setIdFilme(rs.getLong("id_filme"));
             filme.setTitulo(rs.getString("titulo"));
             filme.setDuracao(rs.getInt("duracao"));

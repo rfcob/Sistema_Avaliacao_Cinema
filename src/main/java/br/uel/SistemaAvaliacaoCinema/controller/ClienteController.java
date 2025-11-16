@@ -44,7 +44,7 @@ public class ClienteController {
         try {
             Cliente cliente = clienteService.buscarClientePorId(id);
             model.addAttribute("cliente", cliente);
-            model.addAttribute("tituloPagina", "Editar Cliente: " + cliente.getNomeCliente());
+            model.addAttribute("tituloPagina", "Editar Cliente: " + cliente.getNome());
             return "clientes/form_clientes";
         } catch (RuntimeException e) {
             return "redirect:/clientes";

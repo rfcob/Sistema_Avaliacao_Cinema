@@ -22,9 +22,6 @@ public class CinemaRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-
-    // Classe interna privada que implementa a interface RowMapper.
-
     private class CinemaRowMapper implements RowMapper<Cinema> {
         @Override
         public Cinema mapRow(ResultSet rs, int rowNum) throws SQLException {

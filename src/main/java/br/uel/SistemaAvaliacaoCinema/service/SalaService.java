@@ -33,12 +33,12 @@ public class SalaService {
     }
 
     public void atualizarSala(Long id, Sala sala) {
-        sala.setNumSala(id);
+        sala.setIdSala(id);
         salaRepository.update(sala);
     }
 
 
-      public void excluirSala(Long id) {
+    public void excluirSala(Long id) {
         int linhasAfetadas = salaRepository.softDeleteById(id);
 
         if (linhasAfetadas == 0) {

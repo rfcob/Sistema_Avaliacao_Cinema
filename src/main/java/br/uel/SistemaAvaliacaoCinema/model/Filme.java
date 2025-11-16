@@ -12,7 +12,6 @@ public class Filme {
 
     // Getters
 
-
     public Long getIdFilme() {
         return idFilme;
     }

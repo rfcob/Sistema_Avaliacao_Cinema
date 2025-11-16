@@ -8,15 +8,17 @@ public class Cliente {
     private String nome;
     private String cpf;
     private String email;
-    private String rua;
-    private String bairro;
     private String cidade;
     private String estado;
-    private String cep;
-    private String numero;
     private String telefone;
     private LocalDate dataNascimento;
     private boolean ativo;
+
+    // Campos de endereço comentados pois não estao no SQL (ARRUMAR!!!!!!!!!!!!!!!!)
+    // private String rua;
+    // private String bairro;
+    // private String cep;
+    // private String numero;
 
     public Cliente(){
     }
@@ -26,102 +28,73 @@ public class Cliente {
         return idCliente;
     }
 
-    public String getNomeCliente(){
+    public String getNome(){
         return nome;
     }
 
-    public String getCpfCliente() {
+    public String getCpf() {
         return cpf;
     }
 
-    public String getEmailCliente(){
+    public String getEmail(){
         return email;
     }
 
-    public String getRuaCliente() {
-        return rua;
-    }
-
-    public String getBairroCliente() {
-        return bairro;
-    }
-    public String getCidadeCliente() {
+    public String getCidade() {
         return cidade;
     }
 
-    public String getEstadoCliente() {
+    public String getEstado() {
         return estado;
     }
 
-    public String getCepCliente() {
-        return cep;
-    }
-
-    public String getTelefoneCliente() {
+    public String getTelefone() {
         return telefone;
     }
 
-    public String getNumeroCasaCliente() {
-        return numero;
-    }
-
-    public LocalDate getDataNascimentoCliente() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public boolean isAtivoCliente() {
+    public boolean isAtivo() {
         return ativo;
     }
 
 
     //Setters
-    public void setIdcliente(Long idCliente){
+    public void setIdCliente(Long idCliente){
         this.idCliente = idCliente;
     }
 
-    public void setNomeCliente(String nome){
+    public void setNome(String nome){
         this.nome = nome;
     }
 
-    public void setCpfCliente(String cpf){
+    public void setCpf(String cpf){
         this.cpf = cpf;
     }
 
-    public void setEmailCliente(String email){this.email = email;}
-
-    public void setRuaCliente(String rua){
-        this.rua = rua;
+    public void setEmail(String email){
+        this.email = email;
     }
 
-    public  void setBairroCliente(String bairro){
-        this.bairro = bairro;
-    }
-
-    public void setCidadeCliente(String cidade){
+    public void setCidade(String cidade){
         this.cidade = cidade;
     }
 
-    public void setEstadoCliente(String estado){
+    public void setEstado(String estado){
         this.estado = estado;
-    }
-
-    public void setCepCliente(String cep){
-        this.cep = cep;
-    }
-
-    public void setNumeroCasaCliente(String numero){
-        this.numero = numero;
     }
 
     public void setTelefone(String telefone){
         this.telefone = telefone;
     }
 
-    public void setDataNascimentoCliente(LocalDate dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
-    public void setAtivoCliente(boolean ativo) {
+    public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
 }

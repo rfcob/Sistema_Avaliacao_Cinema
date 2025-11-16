@@ -19,7 +19,7 @@ public class SalaController {
     @Autowired
     private SalaService salaService;
 
-    // Precisamos do CinemaService para popular o <select> do filtro e do formulário
+
     @Autowired
     private CinemaService cinemaService;
 
@@ -31,9 +31,9 @@ public class SalaController {
 
         model.addAttribute("salas", salas);
         model.addAttribute("cinemas", cinemas);
-        model.addAttribute("filtroCinemaId", cinemaId); // Para manter o <select> selecionado
+        model.addAttribute("filtroCinemaId", cinemaId);
 
-        return "sala/lista_salas"; // Aponta para templates/sala/lista_salas.html
+        return "sala/lista_salas";
     }
 
     @GetMapping("/novo")
@@ -41,7 +41,7 @@ public class SalaController {
         model.addAttribute("sala", new Sala());
         model.addAttribute("cinemas", cinemaService.listarCinemas());
         model.addAttribute("tituloPagina", "Cadastrar Nova Sala");
-        return "sala/form_salas"; // Aponta para templates/sala/form_salas.html
+        return "sala/form_salas";
     }
 
     @PostMapping
@@ -60,7 +60,7 @@ public class SalaController {
         try {
             Sala sala = salaService.buscarSalaPorId(id);
             model.addAttribute("sala", sala);
-            model.addAttribute("cinemas", cinemaService.listarCinemas()); // Dropdown de cinemas
+            model.addAttribute("cinemas", cinemaService.listarCinemas());
             model.addAttribute("tituloPagina", "Editar Sala: " + id);
             return "sala/form_salas"; // Reutiliza o mesmo formulário
         } catch (RuntimeException e) {
@@ -86,7 +86,6 @@ public class SalaController {
             salaService.excluirSala(id);
             ra.addFlashAttribute("success", "Sala excluída com sucesso!");
         } catch (Exception e) {
-            // Captura o erro de Chave Estrangeira se a sala tiver sessões
             ra.addFlashAttribute("error", "Erro ao excluir sala: " + e.getMessage());
         }
         return "redirect:/cineSalas";

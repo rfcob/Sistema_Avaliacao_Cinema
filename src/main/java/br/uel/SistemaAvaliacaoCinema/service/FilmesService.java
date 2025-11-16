@@ -27,7 +27,6 @@ public class FilmesService {
     }
 
     public void atualizarFilme(Long id, Filme filme) {
-        // Garante que o ID está correto no objeto antes de atualizar
         filme.setIdFilme(id);
         filmeRepository.update(filme);
     }

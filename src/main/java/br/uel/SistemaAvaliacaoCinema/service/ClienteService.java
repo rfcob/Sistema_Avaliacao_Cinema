@@ -38,13 +38,13 @@ public class ClienteService {
     }
 
     public void cadastrarCliente(Cliente cliente) {
-        cliente.setAtivoCliente(true);
+        cliente.setAtivo(true);
         clienteRepository.incluir(cliente);
     }
 
     public void atualizarCliente(Long id, Cliente cliente) {
-        cliente.setIdcliente(id);
-        cliente.setAtivoCliente(true);
+        cliente.setIdCliente(id);
+        cliente.setAtivo(true);
 
         clienteRepository.update(cliente);
     }
@@ -53,4 +53,3 @@ public class ClienteService {
         clienteRepository.softDeletePorId(id);
     }
 }
-

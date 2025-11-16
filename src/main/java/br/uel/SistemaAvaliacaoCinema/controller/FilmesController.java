@@ -18,14 +18,14 @@ public class FilmesController {
     @GetMapping
     public String listarFilmes(Model model) {
         model.addAttribute("filmes", filmesService.listarFilmes());
-        return "filmes/lista_filmes"; // Aponta para templates/filmes/lista_filmes.html
+        return "filmes/lista_filmes";
     }
 
     @GetMapping("/novo")
     public String mostrarFormularioNovo(Model model) {
-        model.addAttribute("filme", new Filme()); // Cria um objeto vazio
+        model.addAttribute("filme", new Filme());
         model.addAttribute("tituloPagina", "Cadastrar Novo Filme");
-        return "filmes/form_filmes"; // Aponta para templates/filmes/form_filmes.html
+        return "filmes/form_filmes";
     }
 
     @PostMapping
@@ -36,7 +36,7 @@ public class FilmesController {
         } catch (Exception e) {
             ra.addFlashAttribute("error", "Erro ao cadastrar filme: " + e.getMessage());
         }
-        return "redirect:/filmes"; // Redireciona para a lista
+        return "redirect:/filmes";
     }
 
     @GetMapping("/editar/{id}")
@@ -52,7 +52,7 @@ public class FilmesController {
         }
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public String atualizarFilme(@PathVariable Long id, Filme filme, RedirectAttributes ra) {
         try {
             filmesService.atualizarFilme(id, filme);
@@ -63,7 +63,7 @@ public class FilmesController {
         return "redirect:/filmes";
     }
 
-    @GetMapping("/deletar/{id}")
+    @DeleteMapping("/deletar/{id}")
     public String deletarFilme(@PathVariable Long id, RedirectAttributes ra) {
         try {
             filmesService.excluirFilme(id);

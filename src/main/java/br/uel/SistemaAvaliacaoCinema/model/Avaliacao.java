@@ -5,7 +5,7 @@ public class Avaliacao {
     private Long sessaoId;
     private String sala;
     private String filme;
-    private int nota;
+    private double nota;
     private String comentario;
     private boolean anonima;
     private String cliente;
@@ -27,7 +27,7 @@ public class Avaliacao {
         return filme;
     }
 
-    public int getNota() {
+    public double getNota() {
         return nota;
     }
 
@@ -60,7 +60,7 @@ public class Avaliacao {
         this.filme = filme;
     }
 
-    public void setNota(int nota) {
+    public void setNota(double nota) {
         this.nota = nota;
     }
 
@@ -74,5 +74,8 @@ public class Avaliacao {
 
     public void setCliente(String cliente) {
         this.cliente = cliente;
+    }
+
+    public void setIdSala(long idSala) {
     }
 }

@@ -29,7 +29,8 @@ public class SessaoRepository {
             s.setDataInicio(rs.getTimestamp("data_inicio").toLocalDateTime());
             s.setDataFim(rs.getTimestamp("data_fim").toLocalDateTime());
             s.setPreco(rs.getDouble("preco"));
-            s.setHora(rs.getTime("hora").toLocalTime());
+            s.setDataInicio(rs.getTimestamp("data_inicio").toLocalDateTime());
+            s.setDataFim(rs.getTimestamp("data_fim").toLocalDateTime());
             s.setIdioma(rs.getString("idioma"));
             s.setIdSala(rs.getLong("id_sala"));
             s.setIdFilme(rs.getLong("id_filme"));
@@ -47,7 +48,7 @@ public class SessaoRepository {
         StringBuilder sql = new StringBuilder(
                 "SELECT se.*, sa.tipo_sala, f.titulo, c.nome AS nome_cinema " +
                         "FROM Sessao se " +
-                        "JOIN Sala sa ON se.id_sala = sa.num_sala " +
+                        "JOIN Sala sa ON se.id_sala = sa.id_sala " +
                         "JOIN Cinema c ON sa.id_cinema = c.id_cinema " +
                         "JOIN Filme f ON se.id_filme = f.id_filme " +
                         "WHERE se.ativo = true "
@@ -76,7 +77,7 @@ public class SessaoRepository {
     public Optional<Sessao> findById(Long id) {
         String sql = "SELECT se.*, sa.tipo_sala, f.titulo " +
                 "FROM Sessao se " +
-                "LEFT JOIN Sala sa ON se.id_sala = sa.num_sala " +
+                "LEFT JOIN Sala sa ON se.id_sala = sa.id_sala " +
                 "LEFT JOIN Filme f ON se.id_filme = f.id_filme " +
                 "WHERE se.id_sessao = ? AND se.ativo = true";
         try {

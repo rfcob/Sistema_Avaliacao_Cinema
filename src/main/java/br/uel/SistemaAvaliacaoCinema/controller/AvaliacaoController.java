@@ -1,6 +1,5 @@
 package br.uel.SistemaAvaliacaoCinema.controller;
 
-import br.uel.SistemaAvaliacaoCinema.model.Avaliacao;
 import br.uel.SistemaAvaliacaoCinema.service.AvaliacaoService;
 import br.uel.SistemaAvaliacaoCinema.service.CinemaService;
 import br.uel.SistemaAvaliacaoCinema.service.SessaoService;
