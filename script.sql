@@ -449,7 +449,7 @@ INSERT INTO Avaliacao (data_avaliacao, comentario, comentario_anonimo, nota_gera
  ('2025-10-30 00:00:00', 'Comentário do cliente 100', true, 4.3, 100, 2),
 
 -- RESPOSTAS POR CRITÉRIO
-INSERT INTO Cliente (nome, cpf, email, data_nascimento, telefone, cidade, estado, ativo) VALUES 
+INSERT INTO Avaliacao_Criterio (nota, id_avaliacao, id_criterio) VALUES
 (2.3, 1, 1), 
 (2.8, 1, 2),
 (3.2, 1, 3),
