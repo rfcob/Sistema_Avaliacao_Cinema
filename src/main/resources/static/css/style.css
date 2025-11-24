@@ -1,0 +1,154 @@
+/* Importar Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Open+Sans:wght@300;400;600;700&display=swap');
+
+:root {
+    --primary-color: #4154f1;
+    --secondary-color: #717ff5;
+    --text-color: #444444;
+    --bg-color: #f6f9ff;
+    --card-bg: #ffffff;
+    --heading-color: #012970;
+    --sidebar-width: 300px;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
+    padding-top: 60px; /* Espaço para o header fixo */
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--secondary-color);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Nunito', sans-serif;
+    color: var(--heading-color);
+    font-weight: 700;
+}
+
+/* --- HEADER --- */
+.header {
+    height: 60px;
+    background-color: #fff;
+    box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 997;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.logo span {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--heading-color);
+    font-family: 'Nunito', sans-serif;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background-color: #fff;
+    box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
+    padding: 20px;
+    overflow-y: auto;
+    transition: all 0.3s;
+    z-index: 996;
+}
+
+.sidebar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: #4154f1;
+    background: #f6f9ff;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.sidebar-nav .nav-link i {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.sidebar-nav .nav-link.collapsed {
+    color: #012970;
+    background: #fff;
+}
+
+.sidebar-nav .nav-link:hover {
+    color: #4154f1;
+    background: #f6f9ff;
+}
+
+/* --- MAIN CONTENT --- */
+#main {
+    margin-top: 60px;
+    margin-left: var(--sidebar-width);
+    padding: 20px 30px;
+    transition: all 0.3s;
+}
+
+@media (max-width: 1199px) {
+    .sidebar { left: -300px; }
+    #main { margin-left: 0; }
+    /* Classe para abrir sidebar via JS mobile */
+    .toggle-sidebar .sidebar { left: 0; }
+}
+
+/* --- CARDS (NiceAdmin Style) --- */
+.card {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+    margin-bottom: 30px;
+    background-color: var(--card-bg);
+}
+
+.card-title {
+    padding: 20px 0 15px 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--heading-color);
+    font-family: 'Poppins', sans-serif;
+}
+
+.card-body {
+    padding: 0 20px 20px 20px;
+}
+
+/* --- TABLES --- */
+.table {
+    border-color: #dee2e6;
+}
+.table thead th {
+    border-bottom: 2px solid #eef2f7;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+/* --- BUTTONS --- */
+.btn-primary {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.btn-primary:hover {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
