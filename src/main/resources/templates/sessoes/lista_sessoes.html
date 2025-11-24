@@ -1,101 +1,61 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Sessões</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/lista_sessoes.css" rel="stylesheet">
-</head>
+<head th:replace="~{layout :: head}"></head>
 <body>
+<header th:replace="~{layout :: header}"></header>
+<aside th:replace="~{layout :: sidebar}"></aside>
 
-<header th:replace="~{fragments/layout :: navbar}"></header>
+<main id="main" class="main">
+    <div class="pagetitle"><h1>Sessões</h1></div>
+    <section class="section">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Agenda</h5>
 
-<div class="container pt-4">
-    <h1 class="titulo-pagina">Sessões Cadastradas</h1>
+                <form th:action="@{/sessoes}" method="get" class="row g-2 mb-3 bg-light p-2 rounded">
+                    <div class="col-md-4">
+                        <select class="form-select" name="cinemaId">
+                            <option value="">Todos</option>
+                            <option th:each="c : ${cinemas}" th:value="${c.idCinema}" th:text="${c.nome}" th:selected="${c.idCinema == filtroCinemaId}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" class="form-control" name="data" th:value="${filtroData}">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-secondary w-100">Filtrar</button>
+                    </div>
+                </form>
 
-    <!-- Mensagens de feedback -->
-    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                <a th:href="@{/sessoes/novo}" class="btn btn-success mb-3"><i class="bi bi-plus-lg"></i> Nova Sessão</a>
 
-    <!-- Filtros -->
-    <form th:action="@{/sessoes}" method="get" class="formulario-filtro row g-3 mb-3 align-items-end">
-        <div class="col-md-4">
-            <label for="cinemaId" class="form-label">Filtrar por Cinema:</label>
-            <select class="form-select" id="cinemaId" name="cinemaId">
-                <option value="">--- Todos os Cinemas ---</option>
-                <option th:each="cinema : ${cinemas}"
-                        th:value="${cinema.idCinema}"
-                        th:text="${cinema.nome}"
-                        th:selected="${cinema.idCinema == filtroCinemaId}">
-                </option>
-            </select>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead><tr><th>ID</th><th>Filme</th><th>Sala</th><th>Data/Hora</th><th>Preço</th><th>Ações</th></tr></thead>
+                        <tbody>
+                        <tr th:each="sessao : ${sessoes}">
+                            <td th:text="${sessao.idSessao}"></td>
+                            <td th:text="${sessao.tituloFilme}" class="fw-bold"></td>
+                            <td th:text="${sessao.nomeSala}"></td>
+                            <td>
+                                <div th:text="${#temporals.format(sessao.dataInicio, 'dd/MM/yyyy')}"></div>
+                                <div class="badge bg-secondary" th:text="${sessao.hora}"></div>
+                            </td>
+                            <td th:text="'R$ ' + ${sessao.preco}"></td>
+                            <td>
+                                <a th:href="@{/sessoes/editar/{id}(id=${sessao.idSessao})}" class="btn btn-sm btn-light text-primary"><i class="bi bi-pencil-square"></i></a>
+                                <form th:action="@{/sessoes/{id}(id=${sessao.idSessao})}" th:method="delete" style="display:inline;" onsubmit="return confirm('Excluir?');">
+                                    <button class="btn btn-sm btn-light text-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-
-        <div class="col-md-3">
-            <label for="data" class="form-label">Data:</label>
-            <input type="date" class="form-control" id="data" name="data" th:value="${filtroData}">
-        </div>
-
-        <div class="col-md-3">
-            <label for="hora" class="form-label">Hora:</label>
-            <input type="time" class="form-control" id="hora" name="hora" th:value="${filtroHora}">
-        </div>
-
-        <div class="col-md-2">
-            <button type="submit" class="btn btn-info w-100 botao-filtro">Filtrar</button>
-        </div>
-    </form>
-
-    <!-- Botões de ação (comentados, mas alinhados horizontalmente) -->
-    <!--
-    <div class="botoes-acoes mb-3 d-flex gap-2">
-        <a th:href="@{/sessoes/novo}" class="btn btn-primary botao-acao">Adicionar Nova Sessão</a>
-    </div>
-    -->
-    <div class="tabela-container">
-        <table class="table table-striped table-hover tabela-sessoes w-100">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Cinema</th>
-                <th>Sala</th>
-                <th>Filme</th>
-                <th>Data Início</th>
-                <th>Hora</th>
-                <th>Preço</th>
-                <th>Idioma</th>
-               <!-- <th class="col-acoes">Ações</th> -->
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:if="${#lists.isEmpty(sessoes)}">
-                <td colspan="9">Nenhuma sessão encontrada.</td>
-            </tr>
-            <tr th:each="sessao : ${sessoes}">
-                <td th:text="${sessao.idSessao}"></td>
-                <td th:text="${sessao.nomeSala}"></td>
-                <td th:text="${sessao.idSala}"></td>
-                <td th:text="${sessao.tituloFilme}"></td>
-                <td th:text="${#temporals.format(sessao.dataInicio, 'dd/MM/yyyy HH:mm')}"></td>
-                <td th:text="${sessao.hora}"></td>
-                <td th:text="${sessao.preco}"></td>
-                <td th:text="${sessao.idioma}"></td>
-                <!--  <td class="acoes-tabela d-flex justify-content-center gap-2">-->
-                      <!-- <a th:href="@{/sessoes/editar/{id}(id=${sessao.idSessao})}" class="btn btn-sm btn-warning botao-acao">Editar</a> -->
-                    <!--
-                    <form th:action="@{/sessoes/{id}(id=${sessao.idSessao})}" method="post"
-                          onsubmit="return confirm('Tem certeza que deseja excluir esta sessão?');">
-                        <input type="hidden" name="_method" value="DELETE"/>
-                        <button type="submit" class="btn btn-sm btn-danger botao-acao">Excluir</button>
-                    </form>
-                    -->
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </section>
+</main>
+<div th:replace="~{layout :: scripts}"></div>
 </body>
 </html>

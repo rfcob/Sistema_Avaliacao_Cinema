@@ -1,22 +1,32 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Obrigado!</title>
-
-    <link href="/css/lista_sessoes.css" rel="stylesheet">
-
-    <style>
-        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
-    </style>
-</head>
-
-
-<header th:replace="~{fragments/layout :: navbar}"></header>
-
-
+<head th:replace="~{layout :: head}"></head>
 <body>
-<h1>Obrigado por avaliar!</h1>
-<p>Sua opinião é muito importante para nós.</p>
+
+<header th:replace="~{layout :: header}"></header>
+<aside th:replace="~{layout :: sidebar}"></aside>
+
+<main id="main" class="main">
+    <div class="pagetitle"><h1>Concluído</h1></div>
+
+    <section class="section d-flex flex-column align-items-center justify-content-center py-5">
+        <div class="card col-md-6 text-center shadow-sm">
+            <div class="card-body py-5">
+                <div class="mb-4 text-success display-1">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <h2 class="card-title fs-2 text-success">Obrigado por avaliar!</h2>
+                <p class="card-text fs-5 text-muted">Sua opinião foi registrada com sucesso e é muito importante para nós.</p>
+
+                <div class="mt-4">
+                    <a href="/login" class="btn btn-outline-primary me-2">Nova Avaliação</a>
+                    <a href="/dashboard" class="btn btn-primary">Voltar ao Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{layout :: scripts}"></div>
 </body>
 </html>

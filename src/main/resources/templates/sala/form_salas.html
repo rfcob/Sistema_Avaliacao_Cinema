@@ -1,124 +1,55 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="${tituloPagina}">Formulário de Sala</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { padding-top: 56px; }
-    </style>
-</head>
+<head th:replace="~{layout :: head}"></head>
 <body>
+<header th:replace="~{layout :: header}"></header>
+<aside th:replace="~{layout :: sidebar}"></aside>
 
-<header th:replace="~{fragments/layout :: navbar}"></header>
+<main id="main" class="main">
+    <div class="pagetitle"><h1>Sala</h1></div>
+    <section class="section">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Dados da Sala</h5>
+                <form th:action="${sala.idSala == null} ? @{/cineSalas} : @{/cineSalas/{id}(id=${sala.idSala})}"
+                      th:object="${sala}" method="post" class="row g-3">
 
-<div class="container pt-4">
-    <h1 th:text="${tituloPagina}">Formulário de Sala</h1>
+                    <input type="hidden" name="_method" th:value="${sala.idSala == null} ? 'post' : 'put'" />
+                    <input type="hidden" th:field="*{idSala}" />
 
-    <!-- FORMULÁRIO PARA NOVA SALA -->
-    <form th:if="${sala.numSala == null}"
-          th:action="@{/form_salas}"
-          th:object="${sala}"
-          method="post"
-          class="col-md-8">
+                    <div class="col-md-6">
+                        <label class="form-label">Cinema</label>
+                        <select class="form-select" th:field="*{idCinema}" required>
+                            <option value="">Selecione...</option>
+                            <option th:each="c : ${cinemas}" th:value="${c.idCinema}" th:text="${c.nome}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Nome/Tipo</label>
+                        <input type="text" class="form-control" th:field="*{tipoSala}" placeholder="Ex: Sala 1 VIP">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Capacidade</label>
+                        <input type="number" class="form-control" th:field="*{capacidade}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Som</label>
+                        <input type="text" class="form-control" th:field="*{tipoSom}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Formato</label>
+                        <input type="text" class="form-control" th:field="*{formatoExibicao}">
+                    </div>
 
-        <div class="mb-3">
-            <label for="idCinema" class="form-label">Cinema ao qual pertence:</label>
-            <select class="form-select" th:field="*{idCinema}" id="idCinema" required>
-                <option value="">--- Selecione um Cinema ---</option>
-                <option th:each="cinema : ${cinemas}"
-                        th:value="${cinema.idCinema}"
-                        th:text="${cinema.nome}">
-                </option>
-            </select>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="capacidade" class="form-label">Capacidade:</label>
-                <input type="number" class="form-control" th:field="*{capacidade}" id="capacidade">
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="tipoSala" class="form-label">Tipo de Sala:</label>
-                <input type="text" class="form-control" th:field="*{tipoSala}" id="tipoSala" placeholder="Ex: VIP, Convencional">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="tipoSom" class="form-label">Tipo de Som:</label>
-                <input type="text" class="form-control" th:field="*{tipoSom}" id="tipoSom" placeholder="Ex: Dolby Atmos, 7.1">
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="formatoExibicao" class="form-label">Formato de Exibição:</label>
-                <input type="text" class="form-control" th:field="*{formatoExibicao}" id="formatoExibicao" placeholder="Ex: 2D, 3D">
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="tecnologia" class="form-label">Tecnologia:</label>
-            <input type="text" class="form-control" th:field="*{tecnologia}" id="tecnologia" placeholder="Ex: IMAX, XD, Standard">
-        </div>
-
-        <button type="submit" class="btn btn-success">Salvar</button>
-        <a th:href="@{/cineSalas}" class="btn btn-secondary">Cancelar</a>
-    </form>
-
-    <!-- FORMULÁRIO PARA EDITAR SALA -->
-    <form th:if="${sala.numSala != null}"
-          th:action="@{/cineSalas/{id}(id=${sala.numSala})}"
-          th:object="${sala}"
-          method="post"
-          class="col-md-8">
-
-        <!-- Campo oculto para enviar PUT -->
-        <input type="hidden" name="_method" value="PUT"/>
-        <input type="hidden" th:field="*{numSala}" />
-
-        <!-- Os mesmos campos -->
-        <div class="mb-3">
-            <label for="idCinema" class="form-label">Cinema ao qual pertence:</label>
-            <select class="form-select" th:field="*{idCinema}" id="idCinema" required>
-                <option value="">--- Selecione um Cinema ---</option>
-                <option th:each="cinema : ${cinemas}"
-                        th:value="${cinema.idCinema}"
-                        th:text="${cinema.nome}">
-                </option>
-            </select>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="capacidade" class="form-label">Capacidade:</label>
-                <input type="number" class="form-control" th:field="*{capacidade}" id="capacidade">
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="tipoSala" class="form-label">Tipo de Sala:</label>
-                <input type="text" class="form-control" th:field="*{tipoSala}" id="tipoSala" placeholder="Ex: VIP, Convencional">
+                    <div class="col-12 text-end">
+                        <a th:href="@{/cineSalas}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="tipoSom" class="form-label">Tipo de Som:</label>
-                <input type="text" class="form-control" th:field="*{tipoSom}" id="tipoSom" placeholder="Ex: Dolby Atmos, 7.1">
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="formatoExibicao" class="form-label">Formato de Exibição:</label>
-                <input type="text" class="form-control" th:field="*{formatoExibicao}" id="formatoExibicao" placeholder="Ex: 2D, 3D">
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="tecnologia" class="form-label">Tecnologia:</label>
-            <input type="text" class="form-control" th:field="*{tecnologia}" id="tecnologia" placeholder="Ex: IMAX, XD, Standard">
-        </div>
-
-        <button type="submit" class="btn btn-success">Atualizar</button>
-        <a th:href="@{/lista_salas.html}" class="btn btn-secondary">Cancelar</a>
-    </form>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </section>
+</main>
+<div th:replace="~{layout :: scripts}"></div>
 </body>
 </html>

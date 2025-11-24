@@ -1,59 +1,56 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="${tituloPagina}">Formulário de Filme</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { padding-top: 56px; } /* Espaço para a navbar */
-    </style>
-</head>
+<head th:replace="~{layout :: head}"></head>
 <body>
+<header th:replace="~{layout :: header}"></header>
+<aside th:replace="~{layout :: sidebar}"></aside>
 
-<header th:replace="~{fragments/layout :: navbar}"></header>
+<main id="main" class="main">
+    <div class="pagetitle"><h1>Filme</h1></div>
+    <section class="section">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Detalhes</h5>
+                <form th:action="${filme.idFilme == null} ? @{/filmes} : @{/filmes/{id}(id=${filme.idFilme})}"
+                      th:object="${filme}" method="post" class="row g-3">
 
-<div class="container pt-4">
-    <h1 th:text="${tituloPagina}">Formulário de Filme</h1>
+                    <input type="hidden" name="_method" th:value="${filme.idFilme == null} ? 'post' : 'put'" />
+                    <input type="hidden" th:field="*{idFilme}" />
 
-    <form th:action="${filme.idFilme == null} ? @{/filmes} : @{/filmes/{id}(id=${filme.idFilme})}"
-          th:object="${filme}"
-          method="post"
-          class="col-md-8">
+                    <div class="col-md-8">
+                        <label class="form-label">Título</label>
+                        <input type="text" class="form-control" th:field="*{titulo}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Ano</label>
+                        <input type="number" class="form-control" th:field="*{anoProducao}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Gênero</label>
+                        <input type="text" class="form-control" th:field="*{genero}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Direção</label>
+                        <input type="text" class="form-control" th:field="*{direcao}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Duração (min)</label>
+                        <input type="number" class="form-control" th:field="*{duracao}">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Elenco</label>
+                        <textarea class="form-control" th:field="*{elenco}" rows="2"></textarea>
+                    </div>
 
-        <input type="hidden" name="_method" th:value="${filme.idFilme == null} ? 'post' : 'put'" />
-
-        <input type="hidden" th:if="${filme.idFilme != null}" th:field="*{idFilme}" />
-
-        <div class="mb-3">
-            <label for="titulo" class="form-label">Título:</label>
-            <input type="text" class="form-control" th:field="*{titulo}" id="titulo" required>
+                    <div class="col-12 text-end">
+                        <a th:href="@{/filmes}" class="btn btn-secondary">Voltar</a>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="anoProducao" class="form-label">Ano de Produção:</label>
-            <input type="number" class="form-control" th:field="*{anoProducao}" id="anoProducao" required>
-        </div>
-        <div class="mb-3">
-            <label for="genero" class="form-label">Gênero:</label>
-            <input type="text" class="form-control" th:field="*{genero}" id="genero">
-        </div>
-        <div class="mb-3">
-            <label for="duracao" class="form-label">Duração (minutos):</label>
-            <input type="number" class="form-control" th:field="*{duracao}" id="duracao">
-        </div>
-        <div class="mb-3">
-            <label for="direcao" class="form-label">Direção:</label>
-            <input type="text" class="form-control" th:field="*{direcao}" id="direcao">
-        </div>
-        <div class="mb-3">
-            <label for="elenco" class="form-label">Elenco:</label>
-            <textarea class="form-control" th:field="*{elenco}" id="elenco" rows="3"></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-success">Salvar</button>
-        <a th:href="@{/filmes}" class="btn btn-secondary">Cancelar</a>
-    </form>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </section>
+</main>
+<div th:replace="~{layout :: scripts}"></div>
 </body>
 </html>

@@ -1,58 +1,53 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="${tituloPagina}">Formulário de Cinema</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { padding: 20px; }
-    </style>
-</head>
-
-<header th:replace="~{fragments/layout :: navbar}"></header>
-
+<head th:replace="~{layout :: head}"></head>
 <body>
-<div class="container">
-    <h1 th:text="${tituloPagina}">Formulário de Cinema</h1>
+<header th:replace="~{layout :: header}"></header>
+<aside th:replace="~{layout :: sidebar}"></aside>
 
-    <form th:action="${cinema.idCinema == null} ? @{/cinema} : @{/cinema/{id}(id=${cinema.idCinema})}"
-          th:object="${cinema}"
-          method="post"
-          class="col-md-8">
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1 th:text="${cinema.idCinema == null ? 'Novo Cinema' : 'Editar Cinema'}"></h1>
+    </div>
+    <section class="section">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Dados do Cinema</h5>
+                <form th:action="${cinema.idCinema == null} ? @{/cinema} : @{/cinema/{id}(id=${cinema.idCinema})}"
+                      th:object="${cinema}" method="post" class="row g-3">
 
-        <input type="hidden" name="_method" th:value="${cinema.idCinema == null} ? 'post' : 'put'" />
+                    <input type="hidden" name="_method" th:value="${cinema.idCinema == null} ? 'post' : 'put'" />
+                    <input type="hidden" th:field="*{idCinema}" />
 
-        <input type="hidden" th:if="${cinema.idCinema != null}" th:field="*{idCinema}" />
+                    <div class="col-md-6">
+                        <label class="form-label">Nome</label>
+                        <input type="text" class="form-control" th:field="*{nome}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Tipo</label>
+                        <select class="form-select" th:field="*{tipoEstabelecimento}">
+                            <option value="Shopping">Shopping</option>
+                            <option value="Rua">Rua</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Localização</label>
+                        <input type="text" class="form-control" th:field="*{localizacao}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Número de Salas</label>
+                        <input type="number" class="form-control" th:field="*{numeroSalas}">
+                    </div>
 
-        <div class="mb-3">
-            <label for="nome" class="form-label">Nome:</label>
-            <input type="text" class="form-control" th:field="*{nome}" id="nome" required>
+                    <div class="col-12 text-end">
+                        <a th:href="@{/cinema}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label for="localizacao" class="form-label">Localização:</label>
-            <input type="text" class="form-control" th:field="*{localizacao}" id="localizacao">
-        </div>
-
-        <div class="mb-3">
-            <label for="tipoEstabelecimento" class="form-label">Tipo de Estabelecimento:</label>
-            <select class="form-select" th:field="*{tipoEstabelecimento}" id="tipoEstabelecimento" required>
-                <option value="" th:text="'--- Selecione um tipo ---'"></option>
-                <option value="shopping">Shopping</option>
-                <option value="galeria">Galeria</option>
-                <option value="cinema de rua">Cinema de Rua</option>
-            </select>
-        </div>
-
-
-        <div class="mb-3">
-            <label for="numeroSalas" class="form-label">Número de Salas:</label>
-            <input type="number" class="form-control" th:field="*{numeroSalas}" id="numeroSalas">
-        </div>
-
-        <button type="submit" class="btn btn-success">Salvar</button>
-        <a th:href="@{/cinema}" class="btn btn-secondary">Cancelar</a>
-    </form>
-</div>
+    </section>
+</main>
+<div th:replace="~{layout :: scripts}"></div>
 </body>
 </html>

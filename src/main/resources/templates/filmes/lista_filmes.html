@@ -2,79 +2,46 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout :: head}"></head>
 <body>
-
 <header th:replace="~{layout :: header}"></header>
 <aside th:replace="~{layout :: sidebar}"></aside>
 
 <main id="main" class="main">
-
-</main>
-
-<div th:replace="~{layout :: scripts}"></div>
-</body>
-
-<main id="main" class="main">
-
-    <div class="pagetitle">
-        <h1>Catálogo de Filmes</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-                <li class="breadcrumb-item active">Filmes</li>
-            </ol>
-        </nav>
-    </div>
-
+    <div class="pagetitle"><h1>Filmes</h1></div>
     <section class="section">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Filmes Cadastrados</h5>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Catálogo</h5>
 
-                        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
-                            <span th:text="${success}"></span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
+                <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+                    <span th:text="${success}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
 
-                        <a th:href="@{/filmes/novo}" class="btn btn-primary mb-3"><i class="bi bi-plus-circle me-1"></i> Novo Filme</a>
+                <a th:href="@{/filmes/novo}" class="btn btn-success mb-3"><i class="bi bi-plus-lg"></i> Novo Filme</a>
 
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Título</th>
-                                <th scope="col">Ano</th>
-                                <th scope="col">Gênero</th>
-                                <th scope="col">Direção</th>
-                                <th scope="col">Ações</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="filme : ${filmes}">
-                                <th scope="row" th:text="${filme.idFilme}"></th>
-                                <td th:text="${filme.titulo}" class="fw-bold"></td>
-                                <td th:text="${filme.anoProducao}"></td>
-                                <td th:text="${filme.genero}"></td>
-                                <td th:text="${filme.direcao}"></td>
-                                <td>
-                                    <a th:href="@{/filmes/editar/{id}(id=${filme.idFilme})}" class="btn btn-sm btn-light text-primary" title="Editar"><i class="bi bi-pencil-square"></i></a>
-
-                                    <form th:action="@{/filmes/{id}(id=${filme.idFilme})}" th:method="delete" style="display:inline;" onsubmit="return confirm('Confirmar exclusão?');">
-                                        <button type="submit" class="btn btn-sm btn-light text-danger" title="Excluir"><i class="bi bi-trash"></i></button>
-                                    </form>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead><tr><th>ID</th><th>Título</th><th>Ano</th><th>Gênero</th><th>Ações</th></tr></thead>
+                        <tbody>
+                        <tr th:each="f : ${filmes}">
+                            <td th:text="${f.idFilme}"></td>
+                            <td th:text="${f.titulo}" class="fw-bold"></td>
+                            <td th:text="${f.anoProducao}"></td>
+                            <td th:text="${f.genero}"></td>
+                            <td>
+                                <a th:href="@{/filmes/editar/{id}(id=${f.idFilme})}" class="btn btn-sm btn-light text-primary"><i class="bi bi-pencil-square"></i></a>
+                                <form th:action="@{/filmes/{id}(id=${f.idFilme})}" th:method="delete" style="display:inline;" onsubmit="return confirm('Excluir?');">
+                                    <button class="btn btn-sm btn-light text-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </section>
-
 </main>
-
 <div th:replace="~{layout :: scripts}"></div>
 </body>
 </html>
