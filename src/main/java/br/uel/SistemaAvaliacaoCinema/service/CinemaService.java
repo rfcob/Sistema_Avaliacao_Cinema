@@ -59,7 +59,7 @@ public class CinemaService {
     @Autowired
     private SalaRepository salaRepository; // Injetamos o repositório de salas
 
-    /* MÉTODO PRINCIPAL COM A LÓGICA DE PREENCHIMENTO */
+    /* METODO PRINCIPAL COM A LÓGICA DE PREENCHIMENTO */
     public List<Cinema> listarCinemas(String termo) {
         List<Cinema> cinemas;
 

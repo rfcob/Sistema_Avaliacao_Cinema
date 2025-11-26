@@ -33,7 +33,7 @@ public class SessaoController {
 
         model.addAttribute("sessoes", sessaoService.listarSessoes(cinemaId, data, hora));
 
-        // Para o filtro de cinemas, usamos o método padrão (sobrecarga) ou passamos null
+        // Para o filtro de cinemas, usamos o metodo padrão (sobrecarga) ou passamos null
         model.addAttribute("cinemas", cinemaService.listarCinemas());
 
         model.addAttribute("filtroCinemaId", cinemaId);

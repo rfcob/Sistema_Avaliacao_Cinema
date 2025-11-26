@@ -61,7 +61,7 @@ public class SalaRepository {
         return jdbcTemplate.query(sql, new Object[]{cinemaId}, new SalaRowMapper());
     }
 
-    // --- NOVO MÉTODO DE BUSCA INTELIGENTE ---
+    // --- NOVO METODO DE BUSCA INTELIGENTE ---
     public List<Sala> buscarPorTermo(String termo) {
         String sql = "SELECT s.*, c.nome as nome_cinema FROM Sala s " +
                 "LEFT JOIN Cinema c ON s.id_cinema = c.id_cinema " +
