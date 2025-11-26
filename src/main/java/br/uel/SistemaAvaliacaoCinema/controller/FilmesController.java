@@ -15,9 +15,19 @@ public class FilmesController {
     @Autowired
     private FilmesService filmesService;
 
+//    @GetMapping
+//    public String listarFilmes(Model model) {
+//        model.addAttribute("filmes", filmesService.listarFilmes());
+//        return "filmes/lista_filmes";
+//    }
+
     @GetMapping
-    public String listarFilmes(Model model) {
-        model.addAttribute("filmes", filmesService.listarFilmes());
+    public String listarFilmes(Model model, @RequestParam(value = "termo", required = false) String termo) {
+
+        model.addAttribute("filmes", filmesService.listarFilmes(termo));
+
+        model.addAttribute("termo", termo);
+
         return "filmes/lista_filmes";
     }
 

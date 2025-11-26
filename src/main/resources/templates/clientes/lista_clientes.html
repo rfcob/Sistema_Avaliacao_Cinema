@@ -10,21 +10,65 @@
     <section class="section">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Base de Clientes</h5>
-                <a th:href="@{/clientes/novo}" class="btn btn-primary mb-3">Novo Cliente</a>
+<!--                <h5 class="card-title">Gerenciar</h5>-->
+
+                <form th:action="@{/clientes}" method="get" class="row g-3 mb-4 align-items-end">
+                    <div class="col-md-8">
+                        <label for="termo" class="form-label fw-bold text-secondary">Pesquisar</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" id="termo" name="termo"
+                                   th:value="${termo}"
+                                   placeholder="Digite nome, sobrenome, email ou CPF...">
+
+                            <a th:if="${termo != null and !termo.isEmpty()}" th:href="@{/clientes}" class="btn btn-outline-secondary" title="Limpar busca">
+                                <i class="bi bi-x-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-secondary w-100">Buscar</button>
+                    </div>
+
+                    <div class="col-md-2">
+                        <a th:href="@{/clientes/novo}" class="btn btn-primary w-100"><i class="bi bi-plus-lg"></i> Novo</a>
+                    </div>
+                </form>
                 <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead><tr><th>ID</th><th>Nome</th><th>Email</th><th>CPF</th><th>Ações</th></tr></thead>
+                    <table class="table table-hover align-middle">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>CPF</th>
+                            <th>Telefone</th>
+                            <th>Ações</th>
+                        </tr>
+                        </thead>
                         <tbody>
+                        <tr th:if="${#lists.isEmpty(clientes)}">
+                            <td colspan="6" class="text-center text-muted py-4">
+                                <i class="bi bi-emoji-frown fs-4 d-block mb-2"></i>
+                                Nenhum cliente encontrado.
+                            </td>
+                        </tr>
                         <tr th:each="c : ${clientes}">
                             <td th:text="${c.idCliente}"></td>
-                            <td th:text="${c.nome}" class="fw-bold"></td>
+
+                            <td class="fw-bold text-primary">
+                                <i class="bi bi-person-circle me-2 text-secondary"></i>
+                                <span th:text="${c.nome}"></span>
+                            </td>
+
                             <td th:text="${c.email}"></td>
                             <td th:text="${c.cpf}"></td>
+                            <td th:text="${c.telefone}"></td>
                             <td>
-                                <a th:href="@{/clientes/editar/{id}(id=${c.idCliente})}" class="btn btn-sm btn-light text-primary"><i class="bi bi-pencil-square"></i></a>
-                                <form th:action="@{/clientes/{id}(id=${c.idCliente})}" th:method="delete" style="display:inline;" onsubmit="return confirm('Inativar?');">
-                                    <button class="btn btn-sm btn-light text-danger"><i class="bi bi-trash"></i></button>
+                                <a th:href="@{/clientes/editar/{id}(id=${c.idCliente})}" class="btn btn-sm btn-light text-primary" title="Editar"><i class="bi bi-pencil-square"></i></a>
+                                <form th:action="@{/clientes/{id}(id=${c.idCliente})}" th:method="delete" style="display:inline;" onsubmit="return confirm('Desativar este cliente?');">
+                                    <button class="btn btn-sm btn-light text-danger" title="Desativar"><i class="bi bi-trash"></i></button>
                                 </form>
                             </td>
                         </tr>

@@ -52,4 +52,13 @@ public class ClienteService {
     public void deletarCliente(Long id) {
         clienteRepository.softDeletePorId(id);
     }
+
+    // PAra busca
+    public List<Cliente> listarClientes(String termo) {
+        if (termo != null && !termo.isBlank()) {
+            return clienteRepository.buscarPorTermo(termo);
+        }
+        // Se não tiver termo, lista todos
+        return clienteRepository.listarTodos();
+    }
 }

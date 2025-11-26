@@ -1,5 +1,6 @@
 package br.uel.SistemaAvaliacaoCinema.service;
 
+import br.uel.SistemaAvaliacaoCinema.model.Cliente;
 import br.uel.SistemaAvaliacaoCinema.model.Filme;
 import br.uel.SistemaAvaliacaoCinema.repository.FilmesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,14 @@ public class FilmesService {
 
     public void excluirFilme(Long id) {
         filmeRepository.deletePorId(id);
+    }
+
+    // PAra busca
+    public List<Filme> listarFilmes(String termo) {
+        if (termo != null && !termo.isBlank()) {
+            return filmeRepository.buscarPorTermo(termo);
+        }
+        // Se não tiver termo, lista todos
+        return filmeRepository.listarTodos();
     }
 }

@@ -146,4 +146,19 @@ public class ClienteRepository {
         String sql = "UPDATE Cliente SET ativo = false WHERE id_cliente = ?";
         return jdbcTemplate.update(sql, id);
     }
+
+    // Busca inteligente: procura o termo no Nome, Email ou CPF
+    public List<Cliente> buscarPorTermo(String termo) {
+        String sql = "SELECT * FROM Cliente WHERE ativo = true AND (" +
+                "nome ILIKE ? OR " +
+                "email ILIKE ? OR " +
+                "cpf ILIKE ? " +
+                ") ORDER BY nome";
+
+        String pattern = "%" + termo + "%";
+
+        return jdbcTemplate.query(sql, new Object[]{pattern, pattern, pattern}, new ClienteRowMapper());
+    }
+
+
 }

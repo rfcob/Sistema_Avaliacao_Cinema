@@ -15,11 +15,11 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    @GetMapping
-    public String listarClientes(Model model) {
-        model.addAttribute("clientes", clienteService.listarClientes());
-        return "clientes/lista_clientes";
-    }
+//    @GetMapping
+//    public String listarClientes(Model model) {
+//        model.addAttribute("clientes", clienteService.listarClientes());
+//        return "clientes/lista_clientes";
+//    }
 
     @GetMapping("/novo")
     public String mostrarFormularioNovo(Model model) {
@@ -72,5 +72,15 @@ public class ClienteController {
             ra.addFlashAttribute("error", "Erro ao excluir cliente: " + e.getMessage());
         }
         return "redirect:/clientes";
+    }
+
+    @GetMapping
+    public String listarClientes(Model model, @RequestParam(value = "termo", required = false) String termo) {
+
+        model.addAttribute("clientes", clienteService.listarClientes(termo));
+
+        model.addAttribute("termo", termo);
+
+        return "clientes/lista_clientes";
     }
 }

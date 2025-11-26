@@ -1,5 +1,6 @@
 package br.uel.SistemaAvaliacaoCinema.repository;
 
+import br.uel.SistemaAvaliacaoCinema.model.Cliente;
 import br.uel.SistemaAvaliacaoCinema.model.Filme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -94,4 +95,18 @@ public class FilmesRepository {
         String sql = "DELETE FROM Filme WHERE id_filme = ?";
         return jdbcTemplate.update(sql, id);
     }
+
+    // Busca inteligente: Título, Gênero ou Ano
+    public List<Filme> buscarPorTermo(String termo) {
+        String sql = "SELECT * FROM Filme WHERE " + // Tabela no singular
+                "titulo ILIKE ? OR " +
+                "genero ILIKE ? OR " +
+                "CAST(ano_producao AS TEXT) ILIKE ? " + // Converte número para texto para usar ILIKE
+                "ORDER BY titulo"; // Ordena pelo título
+
+        String pattern = "%" + termo + "%";
+
+        return jdbcTemplate.query(sql, new Object[]{pattern, pattern, pattern}, new FilmeRowMapper());
+    }
+
 }

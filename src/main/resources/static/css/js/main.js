@@ -1,11 +1,6 @@
-/**
- * main.js
- * Scripts principais do sistema NiceCinema
- */
-
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* --- Lógica do Botão Sanduíche (Header) --- */
+    /* --- Botão Sanduíche (Clique) --- */
     const toggleBtn = document.querySelector('.toggle-sidebar-btn');
     if (toggleBtn) {
         toggleBtn.addEventListener('click', () => {
@@ -13,20 +8,32 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    /* --- Lógica do Sensor de Toque (Borda Esquerda) --- */
+    /* --- Sensor Lateral (Passar o Mouse) --- */
     const sensor = document.getElementById('sidebar-sensor');
-    if (sensor) {
-        sensor.addEventListener('mouseenter', () => {
-            // Apenas ABRE o menu (adiciona a classe), não fecha se clicar de novo
-            // (pois a sidebar vai cobrir o sensor quando estiver aberta)
-            document.body.classList.add('toggle-sidebar');
-        });
 
-        // Adiciona suporte a 'touchstart' para resposta mais rápida no celular
-        sensor.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Evita comportamento padrão de clique duplo/zoom
-            document.body.classList.add('toggle-sidebar');
-        }, {passive: false});
+    if (sensor) {
+        // Evento: Quando o mouse ENTRA na área (encosta na borda)
+        sensor.addEventListener('mouseenter', () => {
+
+            // Lógica Inteligente:
+            // Queremos MOSTRAR a sidebar.
+
+            // Cenário 1: Mobile (Tela pequena)
+            // No mobile, a classe 'toggle-sidebar' MOSTRA o menu.
+            if (window.innerWidth < 1200) {
+                document.body.classList.add('toggle-sidebar');
+            }
+
+                // Cenário 2: Desktop (Tela grande)
+                // No desktop, a sidebar já é visível por padrão.
+                // A classe 'toggle-sidebar' ESCONDE o menu.
+            // Então, se estiver escondido (tem a classe), nós removemos a classe para mostrar.
+            else {
+                if (document.body.classList.contains('toggle-sidebar')) {
+                    document.body.classList.remove('toggle-sidebar');
+                }
+            }
+        });
     }
 
 });

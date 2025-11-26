@@ -1,28 +1,150 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Open+Sans:wght@300;400;600;700&display=swap');
 
-:root {
-    /* CORES GERAIS */
-    --primary-color: #4154f1;
-    --secondary-color: #717ff5;
-    --text-color: #444444;
-    --bg-color: #e5e6ec;      /* Cor de fundo da área principal (cinza bem claro) */
-    --card-bg: #ffffff;       /* Cor dos cards (Branco) */
-    --heading-color: #012970;
 
-    /* --- NOVA CONFIGURAÇÃO DE CORES DAS BARRAS --- */
-    --nav-bg-color: #000000;  /* Cor de fundo da Lateral e Topo (Azul Escuro) */
-    --nav-text-color: #aab7cf;/* Cor do texto dos menus inativos */
-    --nav-hover-text: #ffffff;/* Cor do texto ao passar o mouse */
-    --sidebar-width: 300px;
-}
 
+
+
+/*:root {*/
+/*    !* CORES GERAIS *!*/
+/*    --primary-color: #4154f1;*/
+/*    --secondary-color: #717ff5;*/
+/*    --text-color: #444444;*/
+/*    --bg-color: #e5e6ec;      !* Cor de fundo da área principal (cinza bem claro) *!*/
+/*    --card-bg: #ffffff;       !* Cor dos cards (Branco) *!*/
+/*    --heading-color: #012970;*/
+
+/*    !* --- NOVA CONFIGURAÇÃO DE CORES DAS BARRAS --- *!*/
+/*    --nav-bg-color: #000000;  !* Cor de fundo da Lateral e Topo (Azul Escuro) *!*/
+/*    --nav-text-color: #aab7cf;!* Cor do texto dos menus inativos *!*/
+/*    --nav-hover-text: #ffffff;!* Cor do texto ao passar o mouse *!*/
+/*    --sidebar-width: 300px;*/
+/*}*/
+
+/*
 body {
     font-family: 'Open Sans', sans-serif;
     background: var(--bg-color);
     color: var(--text-color);
     padding-top: 60px;
+}*/
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Open+Sans:wght@300;400;600;700&display=swap');
+
+:root {
+    /* CORES GERAIS */
+    --primary-color: #4154f1;
+    --secondary-color: #717ff5;
+    --text-color: #ffffff;
+
+    /* MUDANÇA AQUI: O fundo principal agora é quase transparente (rgba) */
+    /* Antes era #f6f9ff. O 0.6 no final é a transparência (vai de 0.0 a 1.0) */
+    --bg-color: rgb(255, 255, 255);
+
+    --card-bg: #ffffff;       /* Os cards continuam branco sólido para leitura */
+    --heading-color: #012970;
+
+    /* --- NOVA CONFIGURAÇÃO DE CORES DAS BARRAS --- */
+    --nav-bg-color: #4e4e4e;
+    --nav-text-color: #ffffff;
+    --nav-hover-text: #ffffff;
+    --sidebar-width: 300px;
 }
 
+/*body {*/
+/*    font-family: 'Open Sans', sans-serif;*/
+/*    color: var(--text-color);*/
+/*    padding-top: 60px;*/
+/*    min-height: 100vh; !* Garante que o corpo ocupe 100% da altura da tela *!*/
+
+/*    !* --- IMAGEM DE FUNDO --- *!*/
+/*    !* Estou usando uma imagem de exemplo da internet. Veja abaixo como mudar. *!*/
+/*    background-image: url('https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3');*/
+
+/*    !* Faz a imagem cobrir toda a tela sem distorcer *!*/
+/*    background-size: cover;*/
+
+/*    !* Centraliza a imagem *!*/
+/*    background-position: center center;*/
+
+/*    !* Evita que a imagem se repita *!*/
+/*    background-repeat: no-repeat;*/
+
+/*    !* FIXA a imagem. Quando você rola a página, a imagem fica parada no fundo *!*/
+/*    background-attachment: fixed;*/
+/*}*/
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: var(--text-color);
+    padding-top: 60px;
+    min-height: 100vh;
+    position: relative; /* Necessário para o ::before funcionar */
+}
+
+/* CAMADA DA IMAGEM DE FUNDO */
+body::before {
+    content: "";
+    position: fixed; /* Fixa a imagem na tela (não rola junto) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1; /* Joga para trás de todo o conteúdo */
+
+    /* --- SUA IMAGEM AQUI --- */
+    /* Troque pela sua url('../img/cob-cinemas-bg.jpg') quando tiver */
+    background-image: url('https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=2070&auto=format&fit=crop');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* --- O DESFOQUE --- */
+    filter: blur(5px); /* Aumente ou diminua esse número para ajustar o desfoque */
+
+    /* Dica Pro: O blur pode deixar bordas brancas nos cantos.
+       O scale(1.1) dá um zoom leve para esconder essas bordas. */
+    transform: scale(1.1);
+}
+
+/* --- ESTILO DOS TÍTULOS SOBRE O BACKGROUND --- */
+
+/* Título Principal (Ex: Simular Votação) */
+.pagetitle h1 {
+    color: #ffffff; /* Azul Marinho */
+    font-weight: 800; /* Mais grosso para destacar do fundo */
+
+    /* Sombra branca suave ao redor da letra para destacar da aquarela */
+    text-shadow: 2px 2px 4px rgba(4, 2, 2, 0.8);
+}
+
+/* Breadcrumb (Home / Votar) */
+.breadcrumb {
+    background: transparent; /* Garante que não tenha fundo cinza */
+    padding: 0;
+}
+
+/* Link "Home" */
+.breadcrumb-item a {
+    color: #ffffff; /* Azul mais claro (Primary) */
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    text-decoration: none;
+}
+
+/* Item Atual "Votar" */
+.breadcrumb-item.active {
+    color: #ffffff; /* Cinza Escuro */
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* O separador "/" entre Home e Votar */
+.breadcrumb-item + .breadcrumb-item::before {
+    color: #6c757d;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* O resto do CSS (a, h1, .header...) continua igual abaixo... */
 a { color: var(--primary-color); text-decoration: none; }
 a:hover { color: var(--secondary-color); }
 
@@ -46,7 +168,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Ajuste da Logo e Botão no Header Escuro */
 .header .logo span {
-    color: #fff !important; /* Texto da logo branco */
+    color: rgb(0, 0, 0) !important; /* Texto da logo branco */
 }
 .header .toggle-sidebar-btn {
     color: #fff !important; /* Ícone de menu branco */
@@ -104,16 +226,15 @@ h1, h2, h3, h4, h5, h6 {
 .nav-heading {
     font-size: 11px;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.4); /* Texto mais apagado para separar seções */
+    color: #000000;
     font-weight: 600;
     margin: 10px 0 5px 15px;
+    text-shadow: #000000;
 }
-
-/* ... (Mantenha o resto do CSS igual, altere apenas do #main para baixo) ... */
 
 /* --- MAIN (Conteúdo Principal) --- */
 #main {
-    margin-top: 60px;
+    margin-top: 70px;
     margin-left: var(--sidebar-width);
     padding: 20px 30px;
     transition: all 0.3s;

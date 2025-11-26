@@ -6,27 +6,45 @@
 <aside th:replace="~{layout :: sidebar}"></aside>
 
 <main id="main" class="main">
-    <div class="pagetitle"><h1>Filmes</h1></div>
+    <div class="pagetitle"><h1>Filmes /  Catálogo</h1></div>
     <section class="section">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Catálogo</h5>
+<!--                <h5 class="card-title">Catálogo de Filmes</h5>-->
 
                 <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
                     <span th:text="${success}"></span>
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
 
-                <a th:href="@{/filmes/novo}" class="btn btn-success mb-3"><i class="bi bi-plus-lg"></i> Novo Filme</a>
+                <form th:action="@{/filmes}" method="get" class="row g-3 mb-4 align-items-end">
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold text-secondary">Buscar Filme</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" name="termo" th:value="${termo}" placeholder="Título, Gênero ou Ano...">
+                            <a th:if="${termo != null and !termo.isEmpty()}" th:href="@{/filmes}" class="btn btn-outline-secondary"><i class="bi bi-x-lg"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-secondary w-100">Buscar</button>
+                    </div>
+                    <div class="col-md-2">
+                        <a th:href="@{/filmes/novo}" class="btn btn-primary w-100"><i class="bi bi-plus-lg"></i> Novo</a>
+                    </div>
+                </form>
 
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover align-middle">
                         <thead><tr><th>ID</th><th>Título</th><th>Ano</th><th>Gênero</th><th>Ações</th></tr></thead>
                         <tbody>
+                        <tr th:if="${#lists.isEmpty(filmes)}">
+                            <td colspan="5" class="text-center text-muted py-3">Nenhum filme encontrado.</td>
+                        </tr>
                         <tr th:each="f : ${filmes}">
                             <td th:text="${f.idFilme}"></td>
-                            <td th:text="${f.titulo}" class="fw-bold"></td>
-                            <td th:text="${f.anoProducao}"></td>
+                            <td th:text="${f.titulo}" class="fw-bold text-primary"></td>
+                            <td><span class="badge bg-light text-dark border" th:text="${f.anoProducao}"></span></td>
                             <td th:text="${f.genero}"></td>
                             <td>
                                 <a th:href="@{/filmes/editar/{id}(id=${f.idFilme})}" class="btn btn-sm btn-light text-primary"><i class="bi bi-pencil-square"></i></a>
