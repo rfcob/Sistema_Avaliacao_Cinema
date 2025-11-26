@@ -10,7 +10,7 @@
     <section class="section">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Listagem de Cinemas</h5>
+<!--                <h5 class="card-title">Listagem de Cinemas</h5>-->
 
                 <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
                     <span th:text="${success}"></span>
@@ -21,20 +21,58 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
 
-                <a th:href="@{/cinema/novo}" class="btn btn-primary mb-3"><i class="bi bi-plus-lg"></i> Novo Cinema</a>
+                <form th:action="@{/cinema}" method="get" class="row g-3 mb-4 align-items-end">
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold text-secondary">Busca Rápida</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" name="termo" th:value="${termo}"
+                                   placeholder="Pesquise por Nome, Localização ou Tipo (ex: Shopping)...">
+                            <a th:if="${termo != null and !termo.isEmpty()}" th:href="@{/cinema}" class="btn btn-outline-secondary" title="Limpar"><i class="bi bi-x-lg"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-secondary w-100">Buscar</button>
+                    </div>
+                    <div class="col-md-2">
+                        <a th:href="@{/cinema/novo}" class="btn btn-primary w-100"><i class="bi bi-plus-lg"></i> Novo</a>
+                    </div>
+                </form>
 
                 <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead><tr><th>ID</th><th>Nome</th><th>Localização</th><th>Tipo</th><th>Ações</th></tr></thead>
+                    <table class="table table-hover align-middle">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Localização</th>
+                            <th>Tipo</th>
+                            <th>Salas Disponíveis</th>
+                            <th>Qtd.</th>
+                            <th>Ações</th>
+                        </tr>
+                        </thead>
                         <tbody>
-                        <tr th:each="c : ${cinemas}">
-                            <td th:text="${c.idCinema}"></td>
-                            <td th:text="${c.nome}" class="fw-bold"></td>
-                            <td th:text="${c.localizacao}"></td>
-                            <td th:text="${c.tipoEstabelecimento}"></td>
+                        <tr th:if="${#lists.isEmpty(cinemas)}">
+                            <td colspan="7" class="text-center text-muted py-3">Nenhum cinema encontrado.</td>
+                        </tr>
+                        <tr th:each="cinema : ${cinemas}">
+                            <th scope="row" th:text="${cinema.idCinema}"></th>
+
+                            <td th:text="${cinema.nome}" class="fw-bold text-primary"></td>
+                            <td th:text="${cinema.localizacao}"></td>
                             <td>
-                                <a th:href="@{/cinema/editar/{id}(id=${c.idCinema})}" class="btn btn-sm btn-light text-primary"><i class="bi bi-pencil-square"></i></a>
-                                <form th:action="@{/cinema/{id}(id=${c.idCinema})}" th:method="delete" style="display:inline;" onsubmit="return confirm('Excluir?');">
+                                <span class="badge bg-light text-dark border" th:text="${cinema.tipoEstabelecimento}"></span>
+                            </td>
+
+                            <td>
+                                <small class="text-muted" th:text="${cinema.resumoTiposSalas}"></small>
+                            </td>
+
+                            <td th:text="${cinema.numeroSalas}"></td>
+                            <td>
+                                <a th:href="@{/cinema/editar/{id}(id=${cinema.idCinema})}" class="btn btn-sm btn-light text-primary"><i class="bi bi-pencil-square"></i></a>
+                                <form th:action="@{/cinema/{id}(id=${cinema.idCinema})}" th:method="delete" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir?');">
                                     <button class="btn btn-sm btn-light text-danger"><i class="bi bi-trash"></i></button>
                                 </form>
                             </td>

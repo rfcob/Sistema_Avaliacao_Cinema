@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/cinema")
 
@@ -23,9 +25,27 @@ public class CinemaController {
         return "cinema/form_Cinema";
     }
 
+//    @GetMapping
+//    public String listarCinemas(Model model) {
+//        model.addAttribute("cinemas", cinemaService.listarCinemas());
+//        return "cinema/lista_Cinema";
+//    }
+
     @GetMapping
-    public String listarCinemas(Model model) {
-        model.addAttribute("cinemas", cinemaService.listarCinemas());
+    public String listarCinemas(Model model, @RequestParam(value = "termo", required = false) String termo) {
+
+        List<Cinema> cinemas = cinemaService.listarCinemas(termo);
+
+        System.out.println("Quantidade de cinemas encontrados: " + cinemas.size());
+        if (!cinemas.isEmpty()) {
+            System.out.println("Primeiro cinema da lista: " + cinemas.get(0).getNome());
+        } else {
+            System.out.println("A lista voltou VAZIA do banco de dados.");
+        }
+        System.out.println("--------------------------------------------------");
+
+        model.addAttribute("cinemas", cinemas);
+        model.addAttribute("termo", termo);
         return "cinema/lista_Cinema";
     }
 

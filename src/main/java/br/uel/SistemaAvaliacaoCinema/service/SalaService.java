@@ -13,20 +13,27 @@ public class SalaService {
     @Autowired
     private SalaRepository salaRepository;
 
+    // Lógica unificada de listagem e busca
+    public List<Sala> listarSalas(Long cinemaId, String termo) {
 
-    public List<Sala> listarSalas(Long cinemaId) {
+        // 1. Se tiver termo de busca, usa a busca inteligente (ignora o filtro de ID por enquanto)
+        if (termo != null && !termo.isBlank()) {
+            return salaRepository.buscarPorTermo(termo);
+        }
+
+        // 2. Se não tiver termo, mas tiver ID do cinema, filtra por ID
         if (cinemaId != null && cinemaId > 0) {
             return salaRepository.findByCinemaId(cinemaId);
-        } else {
-            return salaRepository.findAll();
         }
+
+        // 3. Se não tiver nada, traz tudo
+        return salaRepository.findAll();
     }
 
     public Sala buscarSalaPorId(Long id) {
         return salaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Sala não encontrada com id: " + id));
     }
-
 
     public Sala cadastrarSala(Sala sala) {
         return salaRepository.save(sala);
@@ -37,10 +44,8 @@ public class SalaService {
         salaRepository.update(sala);
     }
 
-
     public void excluirSala(Long id) {
         int linhasAfetadas = salaRepository.softDeleteById(id);
-
         if (linhasAfetadas == 0) {
             throw new RuntimeException("Sala não encontrada ou já inativa com id: " + id);
         }

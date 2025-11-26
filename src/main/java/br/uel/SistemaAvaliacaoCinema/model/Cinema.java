@@ -9,6 +9,8 @@ public class Cinema {
     private String tipoEstabelecimento;
     private Integer numeroSalas;
 
+    private String resumoTiposSalas;
+
     // Construtor vazio
     public Cinema() {
     }
@@ -30,6 +32,8 @@ public class Cinema {
     public String getTipoEstabelecimento() {
         return tipoEstabelecimento;
     }
+
+    public String getResumoTiposSalas() { return resumoTiposSalas; }
 
 
     //Settersm
@@ -58,4 +62,7 @@ public class Cinema {
     public void setNumeroSalas(Integer numeroSalas) {
         this.numeroSalas = numeroSalas;
     }
+
+    public void setResumoTiposSalas(String resumoTiposSalas) { this.resumoTiposSalas = resumoTiposSalas; }
 }
+

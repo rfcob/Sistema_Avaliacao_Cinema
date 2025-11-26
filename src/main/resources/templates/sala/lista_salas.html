@@ -12,32 +12,79 @@
             <div class="card-body">
                 <h5 class="card-title">Gerenciar Salas</h5>
 
-                <form th:action="@{/cineSalas}" method="get" class="row g-2 mb-4 bg-light p-2 rounded">
-                    <div class="col-md-5">
+                <form th:action="@{/cineSalas}" method="get" class="row g-3 mb-4 align-items-end bg-light p-3 rounded">
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold text-secondary">Busca Rápida</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" name="termo" th:value="${termo}" placeholder="Ex: IMAX, VIP, Dolby...">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold text-secondary">Filtrar por Cinema</label>
                         <select class="form-select" name="cinemaId">
-                            <option value="0">Todos os Cinemas</option>
-                            <option th:each="c : ${cinemas}" th:value="${c.idCinema}" th:text="${c.nome}" th:selected="${c.idCinema == filtroCinemaId}"></option>
+                            <option value="0">--- Todos os Cinemas ---</option>
+                            <option th:each="c : ${cinemas}"
+                                    th:value="${c.idCinema}"
+                                    th:text="${c.nome}"
+                                    th:selected="${c.idCinema == filtroCinemaId}">
+                            </option>
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-info text-white w-100">Filtrar</button>
+
+                    <div class="col-md-2 d-flex gap-2">
+                        <button type="submit" class="btn btn-secondary w-100" title="Aplicar Filtros">Buscar</button>
+                        <a th:if="${(termo != null and !termo.isEmpty()) or (filtroCinemaId != null and filtroCinemaId > 0)}"
+                           th:href="@{/cineSalas}" class="btn btn-outline-secondary" title="Limpar">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
                     </div>
                 </form>
 
                 <a th:href="@{/cineSalas/novo}" class="btn btn-primary mb-3"><i class="bi bi-plus-lg"></i> Nova Sala</a>
 
                 <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead><tr><th>ID</th><th>Cinema</th><th>Nome</th><th>Capacidade</th><th>Ações</th></tr></thead>
+                    <table class="table table-hover align-middle">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cinema</th>
+                            <th>Tipo / Nome</th>
+                            <th>Tecnologia</th>
+                            <th>Som / Formato</th>
+                            <th>Capac.</th>
+                            <th>Ações</th>
+                        </tr>
+                        </thead>
                         <tbody>
+                        <tr th:if="${#lists.isEmpty(salas)}">
+                            <td colspan="7" class="text-center text-muted py-3">Nenhuma sala encontrada.</td>
+                        </tr>
                         <tr th:each="s : ${salas}">
                             <td th:text="${s.idSala}"></td>
-                            <td th:text="${s.nomeCinema}"></td>
-                            <td th:text="${s.tipoSala}"></td>
+
+                            <td class="fw-bold text-primary">
+                                <i class="bi bi-building me-1 text-muted"></i>
+                                <span th:text="${s.nomeCinema}"></span>
+                            </td>
+
+                            <td>
+                                <span class="badge bg-light text-dark border" th:text="${s.tipoSala}"></span>
+                            </td>
+
+                            <td th:text="${s.tecnologia}"></td>
+
+                            <td>
+                                <small th:text="${s.tipoSom}"></small>
+                                <span class="badge bg-secondary ms-1" th:text="${s.formatoExibicao}"></span>
+                            </td>
+
                             <td th:text="${s.capacidade}"></td>
                             <td>
                                 <a th:href="@{/cineSalas/editar/{id}(id=${s.idSala})}" class="btn btn-sm btn-light text-primary"><i class="bi bi-pencil-square"></i></a>
-                                <form th:action="@{/cineSalas/{id}(id=${s.idSala})}" th:method="delete" style="display:inline;" onsubmit="return confirm('Inativar?');">
+                                <form th:action="@{/cineSalas/{id}(id=${s.idSala})}" th:method="delete" style="display:inline;" onsubmit="return confirm('Inativar sala?');">
                                     <button class="btn btn-sm btn-light text-danger"><i class="bi bi-trash"></i></button>
                                 </form>
                             </td>

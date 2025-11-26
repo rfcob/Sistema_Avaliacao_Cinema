@@ -35,15 +35,16 @@ public class SalaRepository {
             sala.setAtivo(rs.getBoolean("ativo"));
 
             try {
+                // Tenta pegar o nome do cinema se a query tiver feito JOIN
                 sala.setNomeCinema(rs.getString("nome_cinema"));
             } catch (SQLException e) {
-                // Ignora se a coluna "nome_cinema" não existir
+                // Ignora se a coluna não existir no ResultSet
             }
             return sala;
         }
     }
 
-
+    // Busca Padrão (Lista todas ou filtra por Cinema ID)
     public List<Sala> findAll() {
         String sql = "SELECT s.*, c.nome as nome_cinema FROM Sala s " +
                 "LEFT JOIN Cinema c ON s.id_cinema = c.id_cinema " +
@@ -51,20 +52,6 @@ public class SalaRepository {
                 "ORDER BY c.nome, s.id_sala";
         return jdbcTemplate.query(sql, new SalaRowMapper());
     }
-
-
-    public Optional<Sala> findById(Long id) {
-        String sql = "SELECT s.*, c.nome as nome_cinema FROM Sala s " +
-                "LEFT JOIN Cinema c ON s.id_cinema = c.id_cinema " +
-                "WHERE s.id_sala = ? AND s.ativo = true"; // CORRIGIDO
-        try {
-            Sala sala = jdbcTemplate.queryForObject(sql, new Object[]{id}, new SalaRowMapper());
-            return Optional.of(sala);
-        } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
-        }
-    }
-
 
     public List<Sala> findByCinemaId(Long cinemaId) {
         String sql = "SELECT s.*, c.nome as nome_cinema FROM Sala s " +
@@ -74,6 +61,37 @@ public class SalaRepository {
         return jdbcTemplate.query(sql, new Object[]{cinemaId}, new SalaRowMapper());
     }
 
+    // --- NOVO MÉTODO DE BUSCA INTELIGENTE ---
+    public List<Sala> buscarPorTermo(String termo) {
+        String sql = "SELECT s.*, c.nome as nome_cinema FROM Sala s " +
+                "LEFT JOIN Cinema c ON s.id_cinema = c.id_cinema " +
+                "WHERE s.ativo = true AND (" +
+                "c.nome ILIKE ? OR " +              // Busca pelo Nome do Cinema
+                "s.tipo_sala ILIKE ? OR " +         // Busca por VIP, Convencional...
+                "s.tecnologia ILIKE ? OR " +        // Busca por IMAX, XD...
+                "s.tipo_som ILIKE ? OR " +          // Busca por Dolby Atmos...
+                "s.formato_exibicao ILIKE ? " +     // Busca por 3D...
+                ") ORDER BY c.nome, s.id_sala";
+
+        String pattern = "%" + termo + "%";
+
+        // Passamos o padrão 5 vezes (um para cada ? acima)
+        return jdbcTemplate.query(sql,
+                new Object[]{pattern, pattern, pattern, pattern, pattern},
+                new SalaRowMapper());
+    }
+
+    public Optional<Sala> findById(Long id) {
+        String sql = "SELECT s.*, c.nome as nome_cinema FROM Sala s " +
+                "LEFT JOIN Cinema c ON s.id_cinema = c.id_cinema " +
+                "WHERE s.id_sala = ? AND s.ativo = true";
+        try {
+            Sala sala = jdbcTemplate.queryForObject(sql, new Object[]{id}, new SalaRowMapper());
+            return Optional.of(sala);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
 
     public Sala save(Sala sala) {
         String sql = "INSERT INTO Sala (capacidade, tipo_som, formato_exibicao, tecnologia, tipo_sala, id_cinema, ativo) " +
@@ -82,7 +100,7 @@ public class SalaRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id_sala"}); // CORRIGIDO
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id_sala"});
             ps.setObject(1, sala.getCapacidade());
             ps.setString(2, sala.getTipoSom());
             ps.setString(3, sala.getFormatoExibicao());
@@ -94,16 +112,15 @@ public class SalaRepository {
         }, keyHolder);
 
         if (keyHolder.getKey() != null) {
-            sala.setIdSala(keyHolder.getKey().longValue()); // CORRIGIDO
+            sala.setIdSala(keyHolder.getKey().longValue());
         }
         return sala;
     }
 
-
     public int update(Sala sala) {
         String sql = "UPDATE Sala SET capacidade = ?, tipo_som = ?, formato_exibicao = ?, " +
                 "tecnologia = ?, tipo_sala = ?, id_cinema = ? " +
-                "WHERE id_sala = ?"; // CORRIGIDO
+                "WHERE id_sala = ?";
 
         return jdbcTemplate.update(sql,
                 sala.getCapacidade(),
@@ -112,12 +129,19 @@ public class SalaRepository {
                 sala.getTecnologia(),
                 sala.getTipoSala(),
                 sala.getIdCinema(),
-                sala.getIdSala()); // CORRIGIDO
+                sala.getIdSala());
     }
 
-
     public int softDeleteById(Long id) {
-        String sql = "UPDATE Sala SET ativo = false WHERE id_sala = ?"; // CORRIGIDO
+        String sql = "UPDATE Sala SET ativo = false WHERE id_sala = ?";
         return jdbcTemplate.update(sql, id);
+    }
+
+    // Metodo auxiliar para buscar apenas os nomes dos tipos de sala (sem repetir)
+    public List<String> buscarTiposDeSalaPorCinema(Long cinemaId) {
+        String sql = "SELECT DISTINCT tipo_sala FROM Sala WHERE id_cinema = ? AND ativo = true";
+
+        // O queryForList retorna uma lista de Strings direto
+        return jdbcTemplate.queryForList(sql, String.class, cinemaId);
     }
 }

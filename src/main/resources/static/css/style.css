@@ -1,9 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Open+Sans:wght@300;400;600;700&display=swap');
 
-
-
-
-
 /*:root {*/
 /*    !* CORES GERAIS *!*/
 /*    --primary-color: #4154f1;*/
@@ -90,8 +86,8 @@ body::before {
     bottom: 0;
     z-index: -1;
 
-    /* --- SUA IMAGEM AQUI --- */
-    /* Troque pela sua url('../img/cob-cinemas-bg.jpg') quando tiver */
+    /* IMAGEM de Fundo */
+    /* Troque pela sua url('../img/cob-cinemas-bg.jpg') */
     background-image: url('https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=2070&auto=format&fit=crop');
 
     background-size: cover;
@@ -99,27 +95,23 @@ body::before {
     background-repeat: no-repeat;
 
     /* --- O DESFOQUE --- */
-    filter: blur(5px); /* Aumente ou diminua esse número para ajustar o desfoque */
+    filter: blur(3px); /* Aumente ou diminua */
 
-    /* Dica Pro: O blur pode deixar bordas brancas nos cantos.
-       O scale(1.1) dá um zoom leve para esconder essas bordas. */
+    /* zoom leve para esconder essas bordas. */
     transform: scale(1.1);
 }
 
-/* --- ESTILO DOS TÍTULOS SOBRE O BACKGROUND --- */
-
-/* Título Principal (Ex: Simular Votação) */
+/*ESTILO DOS TÍTULOS*/
+/* Título Principal */
 .pagetitle h1 {
-    color: #ffffff; /* Azul Marinho */
-    font-weight: 800; /* Mais grosso para destacar do fundo */
-
-    /* Sombra branca suave ao redor da letra para destacar da aquarela */
+    color: #ffffff;
+    font-weight: 800;
     text-shadow: 2px 2px 4px rgba(4, 2, 2, 0.8);
 }
 
-/* Breadcrumb (Home / Votar) */
+/* (Home / Votar) */
 .breadcrumb {
-    background: transparent; /* Garante que não tenha fundo cinza */
+    background: transparent;
     padding: 0;
 }
 
@@ -144,7 +136,6 @@ body::before {
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 
-/* O resto do CSS (a, h1, .header...) continua igual abaixo... */
 a { color: var(--primary-color); text-decoration: none; }
 a:hover { color: var(--secondary-color); }
 
@@ -154,7 +145,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
 }
 
-/* --- HEADER (Barra Superior) --- */
+/* Barra Superior */
 .header {
     height: 60px;
     background-color: var(--nav-bg-color); /* Usa a cor escura */
@@ -166,15 +157,14 @@ h1, h2, h3, h4, h5, h6 {
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-/* Ajuste da Logo e Botão no Header Escuro */
 .header .logo span {
-    color: rgb(0, 0, 0) !important; /* Texto da logo branco */
+    color: rgb(0, 0, 0) !important;
 }
 .header .toggle-sidebar-btn {
-    color: #fff !important; /* Ícone de menu branco */
+    color: #fff !important;
 }
 
-/* --- SIDEBAR (Barra Lateral) --- */
+/* Barra Lateral */
 .sidebar {
     position: fixed;
     top: 60px; left: 0; bottom: 0;
@@ -203,7 +193,7 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--nav-hover-text);
 }
 
-/* Estado "Collapsed" (Quando NÃO está na página atual) */
+/* Estado "Collapsed"  */
 .sidebar-nav .nav-link.collapsed {
     color: var(--nav-text-color); /* Cor acinzentada */
     background: transparent;      /* Sem fundo */
@@ -213,7 +203,7 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--nav-text-color);
 }
 
-/* Efeito Hover (Passar o mouse) */
+/* Efeito Hover */
 .sidebar-nav .nav-link:hover {
     color: #fff;
     background: rgba(255,255,255,0.15); /* Fundo um pouco mais claro */
@@ -222,7 +212,7 @@ h1, h2, h3, h4, h5, h6 {
     color: #fff;
 }
 
-/* Títulos das seções (Cadastros, Relatórios) */
+/* Cadastros, Relatórios */
 .nav-heading {
     font-size: 11px;
     text-transform: uppercase;
@@ -232,7 +222,7 @@ h1, h2, h3, h4, h5, h6 {
     /*text-shadow: #000000;*/
 }
 
-/* --- MAIN (Conteúdo Principal) --- */
+/* MAIN */
 #main {
     margin-top: 70px;
     margin-left: var(--sidebar-width);
@@ -240,26 +230,20 @@ h1, h2, h3, h4, h5, h6 {
     transition: all 0.3s;
 }
 
-/* --- LÓGICA DE ESCONDER/MOSTRAR SIDEBAR --- */
+/*  LÓGICA DE ESCONDER/MOSTRAR SIDEBAR  */
 
-/* 1. Comportamento em Telas Grandes (Desktop - acima de 1200px) */
+/* Telas Grandes  */
 @media (min-width: 1200px) {
-    /* Quando a classe .toggle-sidebar é adicionada no body: */
-
-    /* A sidebar sai da tela para a esquerda */
     .toggle-sidebar .sidebar {
         left: -300px;
     }
-
-    /* O conteúdo principal estica para ocupar tudo */
     .toggle-sidebar #main {
         margin-left: 0;
     }
 }
 
-/* 2. Comportamento em Telas Pequenas (Mobile/Tablet - até 1199px) */
+/*Telas Pequenas*/
 @media (max-width: 1199px) {
-    /* Por padrão, no mobile, a sidebar JÁ fica escondida */
     .sidebar {
         left: -300px;
     }
@@ -267,12 +251,10 @@ h1, h2, h3, h4, h5, h6 {
         margin-left: 0;
     }
 
-    /* Quando clica no botão (adiciona a classe): A sidebar ENTRA na tela */
     .toggle-sidebar .sidebar {
         left: 0;
     }
 
-    /* Escurece o fundo ao abrir menu no mobile (Opcional, mas recomendado) */
     .toggle-sidebar::before {
         content: "";
         position: fixed;
@@ -281,20 +263,17 @@ h1, h2, h3, h4, h5, h6 {
         z-index: 995;
     }
 
-    /* --- SENSOR DE TOQUE (Modo Debug) --- */
+    /* SENSOR DE TOQUE  */
     #sidebar-sensor {
         position: fixed;
-        top: 0;        /* Desde o topo absoluto */
+        top: 0;
         left: 0;
         bottom: 0;
-        width: 50px;   /* Aumentei para 50px para facilitar o toque */
-        z-index: 9999; /* Valor altíssimo para garantir que fique na frente de tudo */
-
-        /* DEIXAR VISÍVEL: Vermelho transparente */
-       /*background-color: rgba(255, 0, 0, 0);*/
+        width: 50px;
+        z-index: 9999;
         background: transparent;
         cursor: pointer;
-        display: block; /* Garante que o elemento seja renderizado */
+        display: block;
     }
 
 

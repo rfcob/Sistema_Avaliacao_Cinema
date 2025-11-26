@@ -19,19 +19,23 @@ public class SalaController {
     @Autowired
     private SalaService salaService;
 
-
     @Autowired
     private CinemaService cinemaService;
 
-
     @GetMapping
-    public String listarSalas(@RequestParam(value = "cinemaId", required = false) Long cinemaId, Model model) {
-        List<Sala> salas = salaService.listarSalas(cinemaId);
+    public String listarSalas(Model model,
+                              @RequestParam(value = "cinemaId", required = false) Long cinemaId,
+                              @RequestParam(value = "termo", required = false) String termo) {
+
+        List<Sala> salas = salaService.listarSalas(cinemaId, termo);
         List<Cinema> cinemas = cinemaService.listarCinemas();
 
         model.addAttribute("salas", salas);
         model.addAttribute("cinemas", cinemas);
+
+        // Mantém os filtros preenchidos na tela
         model.addAttribute("filtroCinemaId", cinemaId);
+        model.addAttribute("termo", termo);
 
         return "sala/lista_salas";
     }
@@ -62,7 +66,7 @@ public class SalaController {
             model.addAttribute("sala", sala);
             model.addAttribute("cinemas", cinemaService.listarCinemas());
             model.addAttribute("tituloPagina", "Editar Sala: " + id);
-            return "sala/form_salas"; // Reutiliza o mesmo formulário
+            return "sala/form_salas";
         } catch (RuntimeException e) {
             ra.addFlashAttribute("error", e.getMessage());
             return "redirect:/cineSalas";
