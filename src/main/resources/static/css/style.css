@@ -88,7 +88,7 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: -1; /* Joga para trás de todo o conteúdo */
+    z-index: -1;
 
     /* --- SUA IMAGEM AQUI --- */
     /* Troque pela sua url('../img/cob-cinemas-bg.jpg') quando tiver */
@@ -229,7 +229,7 @@ h1, h2, h3, h4, h5, h6 {
     color: #000000;
     font-weight: 600;
     margin: 10px 0 5px 15px;
-    text-shadow: #000000;
+    /*text-shadow: #000000;*/
 }
 
 /* --- MAIN (Conteúdo Principal) --- */
