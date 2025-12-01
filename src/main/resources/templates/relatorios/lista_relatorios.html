@@ -1,3 +1,579 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head th:replace="~{layout :: head}"></head>-->
+<!--<body>-->
+<!--<header th:replace="~{layout :: header}"></header>-->
+<!--<aside th:replace="~{layout :: sidebar}"></aside>-->
+
+<!--<main id="main" class="main">-->
+<!--    <div class="pagetitle">-->
+<!--        <h1>Relatórios e Gráficos</h1>-->
+<!--        <nav>-->
+<!--            <ol class="breadcrumb">-->
+<!--                <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>-->
+<!--                <li class="breadcrumb-item active">Relatórios</li>-->
+<!--            </ol>-->
+<!--        </nav>-->
+<!--    </div>-->
+
+<!--    <section class="section">-->
+<!--        &lt;!&ndash; Alertas &ndash;&gt;-->
+<!--        <div th:if="${success}" class="alert alert-success alert-dismissible fade show">-->
+<!--            <i class="bi bi-check-circle me-2"></i>-->
+<!--            <span th:text="${success}"></span>-->
+<!--            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>-->
+<!--        </div>-->
+<!--        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">-->
+<!--            <i class="bi bi-exclamation-triangle me-2"></i>-->
+<!--            <span th:text="${error}"></span>-->
+<!--            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Card de Filtros &ndash;&gt;-->
+<!--        <div class="card">-->
+<!--            <div class="card-body">-->
+<!--                <h5 class="card-title">-->
+<!--                    <i class="bi bi-funnel me-2"></i>Filtrar e Gerar Relatórios-->
+<!--                </h5>-->
+
+<!--                &lt;!&ndash; Formulário de Filtros &ndash;&gt;-->
+<!--                <form id="formFiltros" th:action="@{/relatorios/filtrar}" method="post" class="row g-3 align-items-end">-->
+<!--                    &lt;!&ndash; Filtros &ndash;&gt;-->
+<!--                    <div class="col-md-3">-->
+<!--                        <label class="form-label">Data Início</label>-->
+<!--                        <input type="date" name="inicio" class="form-control"-->
+<!--                               th:value="${filtroInicio}">-->
+<!--                    </div>-->
+<!--                    <div class="col-md-3">-->
+<!--                        <label class="form-label">Data Fim</label>-->
+<!--                        <input type="date" name="fim" class="form-control"-->
+<!--                               th:value="${filtroFim}">-->
+<!--                    </div>-->
+<!--                    <div class="col-md-3">-->
+<!--                        <label class="form-label">Faixa Etária</label>-->
+<!--                        <select name="faixaEtaria" class="form-select">-->
+<!--                            <option value="">Todas</option>-->
+<!--                            <option value="18-25" th:selected="${filtroFaixaEtaria == '18-25'}">18-25</option>-->
+<!--                            <option value="26-35" th:selected="${filtroFaixaEtaria == '26-35'}">26-35</option>-->
+<!--                            <option value="36-45" th:selected="${filtroFaixaEtaria == '36-45'}">36-45</option>-->
+<!--                            <option value=">45" th:selected="${filtroFaixaEtaria == '>45'}">Acima de 45</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-3">-->
+<!--                        <label class="form-label">Cinema</label>-->
+<!--                        <select name="idCinema" class="form-select">-->
+<!--                            <option value="">Todos</option>-->
+<!--                            <option th:each="cinema : ${cinemas}"-->
+<!--                                    th:value="${cinema.idCinema}"-->
+<!--                                    th:text="${cinema.nome}"-->
+<!--                                    th:selected="${filtroIdCinema == cinema.idCinema}">-->
+<!--                            </option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-3">-->
+<!--                        <label class="form-label">Tipo de Sala</label>-->
+<!--                        <select name="tipoSala" class="form-select">-->
+<!--                            <option value="">Todas</option>-->
+<!--                            <option value="VIP" th:selected="${filtroTipoSala == 'VIP'}">VIP</option>-->
+<!--                            <option value="IMAX" th:selected="${filtroTipoSala == 'IMAX'}">IMAX</option>-->
+<!--                            <option value="Convencional" th:selected="${filtroTipoSala == 'Convencional'}">Convencional</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-3">-->
+<!--                        <label class="form-label">Sentimento</label>-->
+<!--                        <select name="sentimento" class="form-select">-->
+<!--                            <option value="">Todos</option>-->
+<!--                            <option value="positivo" th:selected="${filtroSentimento == 'positivo'}">Positivo</option>-->
+<!--                            <option value="negativo" th:selected="${filtroSentimento == 'negativo'}">Negativo</option>-->
+<!--                            <option value="neutro" th:selected="${filtroSentimento == 'neutro'}">Neutro</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-3">-->
+<!--                        <label class="form-label">Filme</label>-->
+<!--                        <select name="idFilme" class="form-select">-->
+<!--                            <option value="">Todos</option>-->
+<!--                            <option th:each="filme : ${filmes}"-->
+<!--                                    th:value="${filme.idFilme}"-->
+<!--                                    th:text="${filme.titulo}"-->
+<!--                                    th:selected="${filtroIdFilme == filme.idFilme}">-->
+<!--                            </option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Tipo de Relatório &ndash;&gt;-->
+<!--                    <div class="col-md-3">-->
+<!--                        <label class="form-label">Tipo de Relatório</label>-->
+<!--                        <select name="tipoRelatorio" class="form-select">-->
+<!--                            <option value="completo" th:selected="${tipoRelatorio == 'completo'}">Relatório Completo</option>-->
+<!--                            <option value="medias_criterios" th:selected="${tipoRelatorio == 'medias_criterios'}">Médias por Critério</option>-->
+<!--                            <option value="distribuicao_cinemas" th:selected="${tipoRelatorio == 'distribuicao_cinemas'}">Avaliações por Cinema</option>-->
+<!--                            <option value="evolucao_temporal" th:selected="${tipoRelatorio == 'evolucao_temporal'}">Evolução Temporal</option>-->
+<!--                            <option value="notas_por_sala" th:selected="${tipoRelatorio == 'notas_por_sala'}">Notas por Tipo de Sala</option>-->
+<!--                            <option value="sentimentos" th:selected="${tipoRelatorio == 'sentimentos'}">Sentimentos dos Comentários</option>-->
+<!--                            <option value="avaliacoes_por_filme" th:selected="${tipoRelatorio == 'avaliacoes_por_filme'}">Avaliações por Filme</option>-->
+<!--                            <option value="avaliacoes_por_faixa" th:selected="${tipoRelatorio == 'avaliacoes_por_faixa'}">Avaliações por Faixa Etária</option>-->
+<!--                            <option value="avaliacoes_por_hora" th:selected="${tipoRelatorio == 'avaliacoes_por_hora'}">Avaliações por Hora do Dia</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Todos os botões lado a lado &ndash;&gt;-->
+<!--                    <div class="row mt-3 text-center">-->
+<!--                        &lt;!&ndash; Botão 1: Aplicar Filtros &ndash;&gt;-->
+<!--                        <div class="col-3">-->
+<!--                            <button type="submit" class="btn btn-primary w-100">-->
+<!--                                <i class="bi bi-funnel me-1"></i> Aplicar Filtros e Gerar-->
+<!--                            </button>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Botão 2: Limpar Filtros &ndash;&gt;-->
+<!--                        <div class="col-3">-->
+<!--                            <button type="button" class="btn btn-outline-secondary w-100" onclick="limparFiltros()">-->
+<!--                                <i class="bi bi-arrow-clockwise me-1"></i> Limpar Filtros-->
+<!--                            </button>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Botão 3: Gerar Completo sem Filtros &ndash;&gt;-->
+<!--                        <div class="col-3">-->
+<!--                            <button type="button" class="btn btn-success w-100" onclick="gerarCompleto()">-->
+<!--                                <i class="bi bi-graph-up me-1"></i> Gerar Completo sem Filtros-->
+<!--                            </button>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; Botão 4: Limpar Gráficos &ndash;&gt;-->
+<!--                        <div class="col-3">-->
+<!--                            <button type="button" class="btn btn-warning w-100" onclick="limparGraficos()">-->
+<!--                                <i class="bi bi-trash me-1"></i> Limpar Gráficos-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+
+<!--                &lt;!&ndash; Formulários ocultos para ações específicas &ndash;&gt;-->
+<!--                <form id="formCompleto" th:action="@{/relatorios/gerar}" method="post" style="display: none;">-->
+<!--                    <input type="hidden" name="tipoRelatorio" value="completo">-->
+<!--                </form>-->
+
+<!--                <form id="formLimpar" th:action="@{/relatorios/limpar}" method="post" style="display: none;">-->
+<!--                </form>-->
+
+<!--                &lt;!&ndash; Indicador de Filtros Ativos - CORRIGIDO COM VERIFICAÇÕES DE NULIDADE &ndash;&gt;-->
+<!--                <div th:if="${filtrosAplicados}" class="mt-3">-->
+<!--                    <div class="alert alert-info py-2">-->
+<!--                        <small>-->
+<!--                            <i class="bi bi-info-circle me-1"></i>-->
+<!--                            <strong>Filtros aplicados:</strong>-->
+
+<!--                            &lt;!&ndash; Data Início &ndash;&gt;-->
+<!--                            <span th:if="${filtroInicio != null}">-->
+<!--                                De <span th:text="${#temporals.format(filtroInicio, 'dd/MM/yyyy')}"></span>-->
+<!--                            </span>-->
+
+<!--                            &lt;!&ndash; Data Fim &ndash;&gt;-->
+<!--                            <span th:if="${filtroFim != null}">-->
+<!--                                <span th:if="${filtroInicio != null}">até</span>-->
+<!--                                <span th:if="${filtroInicio == null}">Até</span>-->
+<!--                                <span th:text="${#temporals.format(filtroFim, 'dd/MM/yyyy')}"></span>-->
+<!--                            </span>-->
+
+<!--                            &lt;!&ndash; Faixa Etária &ndash;&gt;-->
+<!--                            <span th:if="${filtroFaixaEtaria != null and filtroFaixaEtaria != ''}">-->
+<!--                                <span th:if="${filtroInicio != null or filtroFim != null}">|</span>-->
+<!--                                Faixa: <span th:text="${filtroFaixaEtaria}"></span>-->
+<!--                            </span>-->
+
+<!--                            &lt;!&ndash; Tipo de Sala &ndash;&gt;-->
+<!--                            <span th:if="${filtroTipoSala != null and filtroTipoSala != ''}">-->
+<!--                                <span th:if="${filtroInicio != null or filtroFim != null or (filtroFaixaEtaria != null and filtroFaixaEtaria != '')}">|</span>-->
+<!--                                Sala: <span th:text="${filtroTipoSala}"></span>-->
+<!--                            </span>-->
+
+<!--                            &lt;!&ndash; Sentimento &ndash;&gt;-->
+<!--                            <span th:if="${filtroSentimento != null and filtroSentimento != ''}">-->
+<!--                                <span th:if="${filtroInicio != null or filtroFim != null or (filtroFaixaEtaria != null and filtroFaixaEtaria != '') or (filtroTipoSala != null and filtroTipoSala != '')}">|</span>-->
+<!--                                Sentimento: <span th:text="${filtroSentimento}"></span>-->
+<!--                            </span>-->
+
+<!--                            &lt;!&ndash; Cinema &ndash;&gt;-->
+<!--                            <span th:if="${filtroIdCinema != null}">-->
+<!--                                <span th:if="${filtroInicio != null or filtroFim != null or (filtroFaixaEtaria != null and filtroFaixaEtaria != '') or (filtroTipoSala != null and filtroTipoSala != '') or (filtroSentimento != null and filtroSentimento != '')}">|</span>-->
+<!--                                Cinema:-->
+<!--                                <span th:each="cinema : ${cinemas}"-->
+<!--                                      th:if="${cinema.idCinema == filtroIdCinema}"-->
+<!--                                      th:text="${cinema.nome}"></span>-->
+<!--                            </span>-->
+
+<!--                            &lt;!&ndash; Filme &ndash;&gt;-->
+<!--                            <span th:if="${filtroIdFilme != null}">-->
+<!--                                <span th:if="${filtroInicio != null or filtroFim != null or (filtroFaixaEtaria != null and filtroFaixaEtaria != '') or (filtroTipoSala != null and filtroTipoSala != '') or (filtroSentimento != null and filtroSentimento != '') or filtroIdCinema != null}">|</span>-->
+<!--                                Filme:-->
+<!--                                <span th:each="filme : ${filmes}"-->
+<!--                                      th:if="${filme.idFilme == filtroIdFilme}"-->
+<!--                                      th:text="${filme.titulo}"></span>-->
+<!--                            </span>-->
+
+<!--                            &lt;!&ndash; Se nenhum filtro específico foi aplicado, mostra uma mensagem genérica &ndash;&gt;-->
+<!--                            <span th:if="${filtroInicio == null and filtroFim == null and (filtroFaixaEtaria == null or filtroFaixaEtaria == '') and (filtroTipoSala == null or filtroTipoSala == '') and (filtroSentimento == null or filtroSentimento == '') and filtroIdCinema == null and filtroIdFilme == null}">-->
+<!--                                Todos os filtros padrão-->
+<!--                            </span>-->
+<!--                        </small>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Seção de Gráficos - CORRIGIDA E COMPLETA &ndash;&gt;-->
+<!--        <div th:if="${temGraficos}" class="row mt-4">-->
+
+<!--            &lt;!&ndash; RELATÓRIO COMPLETO - Todos os gráficos &ndash;&gt;-->
+<!--            <div th:if="${tipoRelatorio == 'completo'}">-->
+<!--                &lt;!&ndash; Médias por Critério &ndash;&gt;-->
+<!--                <div class="col-xxl-6 col-xl-6 mb-4">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-body">-->
+<!--                            <h5 class="card-title">Médias por Critério de Avaliação</h5>-->
+<!--                            <div class="text-center">-->
+<!--                                <img th:src="@{/relatorios/imagens/medias_criterios.png(v=${versaoGraficos})}"-->
+<!--                                     class="img-fluid rounded shadow"-->
+<!--                                     alt="Gráfico de médias por critério"-->
+<!--                                     style="max-height: 400px;">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Avaliações por Cinema &ndash;&gt;-->
+<!--                <div class="col-xxl-6 col-xl-6 mb-4">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-body">-->
+<!--                            <h5 class="card-title">Distribuição de Avaliações por Cinema</h5>-->
+<!--                            <div class="text-center">-->
+<!--                                <img th:src="@{/relatorios/imagens/distribuicao_cinemas.png(v=${versaoGraficos})}"-->
+<!--                                     class="img-fluid rounded shadow"-->
+<!--                                     alt="Gráfico de distribuição por cinema"-->
+<!--                                     style="max-height: 400px;">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Evolução Temporal &ndash;&gt;-->
+<!--                <div class="col-xxl-6 col-xl-6 mb-4">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-body">-->
+<!--                            <h5 class="card-title">Evolução Temporal das Avaliações</h5>-->
+<!--                            <div class="text-center">-->
+<!--                                <img th:src="@{/relatorios/imagens/evolucao_temporal.png(v=${versaoGraficos})}"-->
+<!--                                     class="img-fluid rounded shadow"-->
+<!--                                     alt="Gráfico de evolução temporal"-->
+<!--                                     style="max-height: 400px;">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Notas por Tipo de Sala &ndash;&gt;-->
+<!--                <div class="col-xxl-6 col-xl-6 mb-4">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-body">-->
+<!--                            <h5 class="card-title">Notas por Tipo de Sala</h5>-->
+<!--                            <div class="text-center">-->
+<!--                                <img th:src="@{/relatorios/imagens/notas_por_sala.png(v=${versaoGraficos})}"-->
+<!--                                     class="img-fluid rounded shadow"-->
+<!--                                     alt="Gráfico de notas por tipo de sala"-->
+<!--                                     style="max-height: 400px;">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Sentimentos &ndash;&gt;-->
+<!--                <div class="col-xxl-6 col-xl-6 mb-4">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-body">-->
+<!--                            <h5 class="card-title">Sentimentos dos Comentários</h5>-->
+<!--                            <div class="text-center">-->
+<!--                                <img th:src="@{/relatorios/imagens/sentimentos.png(v=${versaoGraficos})}"-->
+<!--                                     class="img-fluid rounded shadow"-->
+<!--                                     alt="Gráfico de sentimentos"-->
+<!--                                     style="max-height: 400px;">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Avaliações por Filme &ndash;&gt;-->
+<!--                <div class="col-xxl-6 col-xl-6 mb-4">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-body">-->
+<!--                            <h5 class="card-title">Avaliações por Filme</h5>-->
+<!--                            <div class="text-center">-->
+<!--                                <img th:src="@{/relatorios/imagens/avaliacoes_por_filme.png(v=${versaoGraficos})}"-->
+<!--                                     class="img-fluid rounded shadow"-->
+<!--                                     alt="Gráfico de avaliações por filme"-->
+<!--                                     style="max-height: 400px;">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Avaliações por Faixa Etária &ndash;&gt;-->
+<!--                <div class="col-xxl-6 col-xl-6 mb-4">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-body">-->
+<!--                            <h5 class="card-title">Avaliações por Faixa Etária</h5>-->
+<!--                            <div class="text-center">-->
+<!--                                <img th:src="@{/relatorios/imagens/avaliacoes_por_faixa.png(v=${versaoGraficos})}"-->
+<!--                                     class="img-fluid rounded shadow"-->
+<!--                                     alt="Gráfico de avaliações por faixa etária"-->
+<!--                                     style="max-height: 400px;">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Avaliações por Hora do Dia &ndash;&gt;-->
+<!--                <div class="col-xxl-6 col-xl-6 mb-4">-->
+<!--                    <div class="card">-->
+<!--                        <div class="card-body">-->
+<!--                            <h5 class="card-title">Avaliações por Hora do Dia</h5>-->
+<!--                            <div class="text-center">-->
+<!--                                <img th:src="@{/relatorios/imagens/avaliacoes_por_hora.png(v=${versaoGraficos})}"-->
+<!--                                     class="img-fluid rounded shadow"-->
+<!--                                     alt="Gráfico de avaliações por hora do dia"-->
+<!--                                     style="max-height: 400px;">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; RELATÓRIOS ESPECÍFICOS - Um gráfico por vez &ndash;&gt;-->
+
+<!--            &lt;!&ndash; Médias por Critério - Específico &ndash;&gt;-->
+<!--            <div th:if="${tipoRelatorio == 'medias_criterios'}" class="col-12">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-body">-->
+<!--                        <h5 class="card-title">Médias por Critério de Avaliação</h5>-->
+<!--                        <div class="text-center">-->
+<!--                            <img th:src="@{/relatorios/imagens/medias_criterios.png(v=${versaoGraficos})}"-->
+<!--                                 class="img-fluid rounded shadow"-->
+<!--                                 alt="Gráfico de médias por critério"-->
+<!--                                 style="max-height: 500px;">-->
+<!--                            <div class="mt-2">-->
+<!--                                <small class="text-muted">-->
+<!--                                    <i class="bi bi-filter"></i>-->
+<!--                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>-->
+<!--                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>-->
+<!--                                </small>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Distribuição por Cinema - Específico &ndash;&gt;-->
+<!--            <div th:if="${tipoRelatorio == 'distribuicao_cinemas'}" class="col-12">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-body">-->
+<!--                        <h5 class="card-title">Distribuição de Avaliações por Cinema</h5>-->
+<!--                        <div class="text-center">-->
+<!--                            <img th:src="@{/relatorios/imagens/distribuicao_cinemas.png(v=${versaoGraficos})}"-->
+<!--                                 class="img-fluid rounded shadow"-->
+<!--                                 alt="Gráfico de distribuição por cinema"-->
+<!--                                 style="max-height: 500px;">-->
+<!--                            <div class="mt-2">-->
+<!--                                <small class="text-muted">-->
+<!--                                    <i class="bi bi-filter"></i>-->
+<!--                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>-->
+<!--                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>-->
+<!--                                </small>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Evolução Temporal - Específico &ndash;&gt;-->
+<!--            <div th:if="${tipoRelatorio == 'evolucao_temporal'}" class="col-12">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-body">-->
+<!--                        <h5 class="card-title">Evolução Temporal das Avaliações</h5>-->
+<!--                        <div class="text-center">-->
+<!--                            <img th:src="@{/relatorios/imagens/evolucao_temporal.png(v=${versaoGraficos})}"-->
+<!--                                 class="img-fluid rounded shadow"-->
+<!--                                 alt="Gráfico de evolução temporal"-->
+<!--                                 style="max-height: 500px;">-->
+<!--                            <div class="mt-2">-->
+<!--                                <small class="text-muted">-->
+<!--                                    <i class="bi bi-filter"></i>-->
+<!--                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>-->
+<!--                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>-->
+<!--                                </small>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Notas por Tipo de Sala - Específico &ndash;&gt;-->
+<!--            <div th:if="${tipoRelatorio == 'notas_por_sala'}" class="col-12">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-body">-->
+<!--                        <h5 class="card-title">Notas por Tipo de Sala</h5>-->
+<!--                        <div class="text-center">-->
+<!--                            <img th:src="@{/relatorios/imagens/notas_por_sala.png(v=${versaoGraficos})}"-->
+<!--                                 class="img-fluid rounded shadow"-->
+<!--                                 alt="Gráfico de notas por tipo de sala"-->
+<!--                                 style="max-height: 500px;">-->
+<!--                            <div class="mt-2">-->
+<!--                                <small class="text-muted">-->
+<!--                                    <i class="bi bi-filter"></i>-->
+<!--                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>-->
+<!--                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>-->
+<!--                                </small>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Sentimentos - Específico &ndash;&gt;-->
+<!--            <div th:if="${tipoRelatorio == 'sentimentos'}" class="col-12">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-body">-->
+<!--                        <h5 class="card-title">Sentimentos dos Comentários</h5>-->
+<!--                        <div class="text-center">-->
+<!--                            <img th:src="@{/relatorios/imagens/sentimentos.png(v=${versaoGraficos})}"-->
+<!--                                 class="img-fluid rounded shadow"-->
+<!--                                 alt="Gráfico de sentimentos"-->
+<!--                                 style="max-height: 500px;">-->
+<!--                            <div class="mt-2">-->
+<!--                                <small class="text-muted">-->
+<!--                                    <i class="bi bi-filter"></i>-->
+<!--                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>-->
+<!--                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>-->
+<!--                                </small>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Avaliações por Filme - Específico &ndash;&gt;-->
+<!--            <div th:if="${tipoRelatorio == 'avaliacoes_por_filme'}" class="col-12">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-body">-->
+<!--                        <h5 class="card-title">Avaliações por Filme</h5>-->
+<!--                        <div class="text-center">-->
+<!--                            <img th:src="@{/relatorios/imagens/avaliacoes_por_filme.png(v=${versaoGraficos})}"-->
+<!--                                 class="img-fluid rounded shadow"-->
+<!--                                 alt="Gráfico de avaliações por filme"-->
+<!--                                 style="max-height: 500px;">-->
+<!--                            <div class="mt-2">-->
+<!--                                <small class="text-muted">-->
+<!--                                    <i class="bi bi-filter"></i>-->
+<!--                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>-->
+<!--                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>-->
+<!--                                </small>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Avaliações por Faixa Etária - Específico &ndash;&gt;-->
+<!--            <div th:if="${tipoRelatorio == 'avaliacoes_por_faixa'}" class="col-12">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-body">-->
+<!--                        <h5 class="card-title">Avaliações por Faixa Etária</h5>-->
+<!--                        <div class="text-center">-->
+<!--                            <img th:src="@{/relatorios/imagens/avaliacoes_por_faixa.png(v=${versaoGraficos})}"-->
+<!--                                 class="img-fluid rounded shadow"-->
+<!--                                 alt="Gráfico de avaliações por faixa etária"-->
+<!--                                 style="max-height: 500px;">-->
+<!--                            <div class="mt-2">-->
+<!--                                <small class="text-muted">-->
+<!--                                    <i class="bi bi-filter"></i>-->
+<!--                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>-->
+<!--                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>-->
+<!--                                </small>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            &lt;!&ndash; Avaliações por Hora do Dia - Específico &ndash;&gt;-->
+<!--            <div th:if="${tipoRelatorio == 'avaliacoes_por_hora'}" class="col-12">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-body">-->
+<!--                        <h5 class="card-title">Avaliações por Hora do Dia</h5>-->
+<!--                        <div class="text-center">-->
+<!--                            <img th:src="@{/relatorios/imagens/avaliacoes_por_hora.png(v=${versaoGraficos})}"-->
+<!--                                 class="img-fluid rounded shadow"-->
+<!--                                 alt="Gráfico de avaliações por hora do dia"-->
+<!--                                 style="max-height: 500px;">-->
+<!--                            <div class="mt-2">-->
+<!--                                <small class="text-muted">-->
+<!--                                    <i class="bi bi-filter"></i>-->
+<!--                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>-->
+<!--                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>-->
+<!--                                </small>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Estado Vazio &ndash;&gt;-->
+<!--        <div th:unless="${temGraficos}" class="text-center mt-5">-->
+<!--            <div class="card">-->
+<!--                <div class="card-body py-5">-->
+<!--                    <i class="bi bi-graph-up display-1 text-muted"></i>-->
+<!--                    <h4 class="text-muted mt-3">Nenhum relatório gerado</h4>-->
+<!--                    <p class="text-muted">Use os filtros acima para gerar relatórios personalizados ou clique em "Gerar Completo" para ver todos os dados.</p>-->
+<!--                    <button type="button" class="btn btn-primary mt-2" onclick="gerarCompleto()">-->
+<!--                        <i class="bi bi-graph-up me-1"></i> Gerar Primeiro Relatório-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+<!--</main>-->
+
+<!--<script>-->
+<!--    function limparFiltros() {-->
+<!--        const form = document.getElementById('formFiltros');-->
+<!--        const inputs = form.querySelectorAll('input, select, textarea');-->
+
+<!--        inputs.forEach(input => {-->
+<!--            if (input.type === 'text' || input.type === 'date' || input.tagName === 'TEXTAREA') {-->
+<!--                input.value = '';-->
+<!--            } else if (input.tagName === 'SELECT') {-->
+<!--                input.selectedIndex = 0;-->
+<!--            }-->
+<!--        });-->
+
+<!--        // Define o tipo de relatório como completo-->
+<!--        const tipoRelatorioSelect = form.querySelector('select[name="tipoRelatorio"]');-->
+<!--        if (tipoRelatorioSelect) {-->
+<!--            tipoRelatorioSelect.value = 'completo';-->
+<!--        }-->
+<!--    }-->
+
+<!--    function gerarCompleto() {-->
+<!--        document.getElementById('formCompleto').submit();-->
+<!--    }-->
+
+<!--    function limparGraficos() {-->
+<!--        document.getElementById('formLimpar').submit();-->
+<!--    }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout :: head}"></head>
@@ -221,310 +797,320 @@
             </div>
         </div>
 
-        <!-- Seção de Gráficos - CORRIGIDA E COMPLETA -->
-        <div th:if="${temGraficos}" class="row mt-4">
+        <!-- Adicionar CSS inline para os gráficos ocuparem largura total -->
+        <style>
+            /* Garantir que os gráficos ocupem toda a largura */
+            .grafico-full-width .card {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+
+            .grafico-full-width .card-body {
+                padding: 1.5rem !important;
+            }
+
+            .grafico-full-width .img-fluid {
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+                max-height: 600px !important;
+                object-fit: contain;
+            }
+
+            /* Remover margens e paddings indesejados */
+            .grafico-full-width {
+                margin-left: -15px;
+                margin-right: -15px;
+            }
+
+            /* Para relatório completo - grid responsivo */
+            .relatorio-completo-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+                gap: 1.5rem;
+                width: 100%;
+            }
+
+            /* Para relatório específico - ocupar toda a linha */
+            .relatorio-especifico {
+                grid-column: 1 / -1;
+            }
+        </style>
+
+        <!-- Seção de Gráficos - MODIFICADA PARA OCUPAR LARGURA TOTAL -->
+        <div th:if="${temGraficos}" class="grafico-full-width mt-4">
 
             <!-- RELATÓRIO COMPLETO - Todos os gráficos -->
-            <div th:if="${tipoRelatorio == 'completo'}">
+            <div th:if="${tipoRelatorio == 'completo'}" class="relatorio-completo-grid">
                 <!-- Médias por Critério -->
-                <div class="col-xxl-6 col-xl-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Médias por Critério de Avaliação</h5>
-                            <div class="text-center">
-                                <img th:src="@{/relatorios/imagens/medias_criterios.png(v=${versaoGraficos})}"
-                                     class="img-fluid rounded shadow"
-                                     alt="Gráfico de médias por critério"
-                                     style="max-height: 400px;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Avaliações por Cinema -->
-                <div class="col-xxl-6 col-xl-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Distribuição de Avaliações por Cinema</h5>
-                            <div class="text-center">
-                                <img th:src="@{/relatorios/imagens/distribuicao_cinemas.png(v=${versaoGraficos})}"
-                                     class="img-fluid rounded shadow"
-                                     alt="Gráfico de distribuição por cinema"
-                                     style="max-height: 400px;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Evolução Temporal -->
-                <div class="col-xxl-6 col-xl-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Evolução Temporal das Avaliações</h5>
-                            <div class="text-center">
-                                <img th:src="@{/relatorios/imagens/evolucao_temporal.png(v=${versaoGraficos})}"
-                                     class="img-fluid rounded shadow"
-                                     alt="Gráfico de evolução temporal"
-                                     style="max-height: 400px;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Notas por Tipo de Sala -->
-                <div class="col-xxl-6 col-xl-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Notas por Tipo de Sala</h5>
-                            <div class="text-center">
-                                <img th:src="@{/relatorios/imagens/notas_por_sala.png(v=${versaoGraficos})}"
-                                     class="img-fluid rounded shadow"
-                                     alt="Gráfico de notas por tipo de sala"
-                                     style="max-height: 400px;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sentimentos -->
-                <div class="col-xxl-6 col-xl-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Sentimentos dos Comentários</h5>
-                            <div class="text-center">
-                                <img th:src="@{/relatorios/imagens/sentimentos.png(v=${versaoGraficos})}"
-                                     class="img-fluid rounded shadow"
-                                     alt="Gráfico de sentimentos"
-                                     style="max-height: 400px;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Avaliações por Filme -->
-                <div class="col-xxl-6 col-xl-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Avaliações por Filme</h5>
-                            <div class="text-center">
-                                <img th:src="@{/relatorios/imagens/avaliacoes_por_filme.png(v=${versaoGraficos})}"
-                                     class="img-fluid rounded shadow"
-                                     alt="Gráfico de avaliações por filme"
-                                     style="max-height: 400px;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Avaliações por Faixa Etária -->
-                <div class="col-xxl-6 col-xl-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Avaliações por Faixa Etária</h5>
-                            <div class="text-center">
-                                <img th:src="@{/relatorios/imagens/avaliacoes_por_faixa.png(v=${versaoGraficos})}"
-                                     class="img-fluid rounded shadow"
-                                     alt="Gráfico de avaliações por faixa etária"
-                                     style="max-height: 400px;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Avaliações por Hora do Dia -->
-                <div class="col-xxl-6 col-xl-6 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Avaliações por Hora do Dia</h5>
-                            <div class="text-center">
-                                <img th:src="@{/relatorios/imagens/avaliacoes_por_hora.png(v=${versaoGraficos})}"
-                                     class="img-fluid rounded shadow"
-                                     alt="Gráfico de avaliações por hora do dia"
-                                     style="max-height: 400px;">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- RELATÓRIOS ESPECÍFICOS - Um gráfico por vez -->
-
-            <!-- Médias por Critério - Específico -->
-            <div th:if="${tipoRelatorio == 'medias_criterios'}" class="col-12">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Médias por Critério de Avaliação</h5>
                         <div class="text-center">
                             <img th:src="@{/relatorios/imagens/medias_criterios.png(v=${versaoGraficos})}"
                                  class="img-fluid rounded shadow"
-                                 alt="Gráfico de médias por critério"
-                                 style="max-height: 500px;">
-                            <div class="mt-2">
-                                <small class="text-muted">
-                                    <i class="bi bi-filter"></i>
-                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
-                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
-                                </small>
-                            </div>
+                                 alt="Gráfico de médias por critério">
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Distribuição por Cinema - Específico -->
-            <div th:if="${tipoRelatorio == 'distribuicao_cinemas'}" class="col-12">
+                <!-- Avaliações por Cinema -->
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Distribuição de Avaliações por Cinema</h5>
                         <div class="text-center">
                             <img th:src="@{/relatorios/imagens/distribuicao_cinemas.png(v=${versaoGraficos})}"
                                  class="img-fluid rounded shadow"
-                                 alt="Gráfico de distribuição por cinema"
-                                 style="max-height: 500px;">
-                            <div class="mt-2">
-                                <small class="text-muted">
-                                    <i class="bi bi-filter"></i>
-                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
-                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
-                                </small>
-                            </div>
+                                 alt="Gráfico de distribuição por cinema">
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Evolução Temporal - Específico -->
-            <div th:if="${tipoRelatorio == 'evolucao_temporal'}" class="col-12">
+                <!-- Evolução Temporal -->
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Evolução Temporal das Avaliações</h5>
                         <div class="text-center">
                             <img th:src="@{/relatorios/imagens/evolucao_temporal.png(v=${versaoGraficos})}"
                                  class="img-fluid rounded shadow"
-                                 alt="Gráfico de evolução temporal"
-                                 style="max-height: 500px;">
-                            <div class="mt-2">
-                                <small class="text-muted">
-                                    <i class="bi bi-filter"></i>
-                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
-                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
-                                </small>
-                            </div>
+                                 alt="Gráfico de evolução temporal">
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Notas por Tipo de Sala - Específico -->
-            <div th:if="${tipoRelatorio == 'notas_por_sala'}" class="col-12">
+                <!-- Notas por Tipo de Sala -->
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Notas por Tipo de Sala</h5>
                         <div class="text-center">
                             <img th:src="@{/relatorios/imagens/notas_por_sala.png(v=${versaoGraficos})}"
                                  class="img-fluid rounded shadow"
-                                 alt="Gráfico de notas por tipo de sala"
-                                 style="max-height: 500px;">
-                            <div class="mt-2">
-                                <small class="text-muted">
-                                    <i class="bi bi-filter"></i>
-                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
-                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
-                                </small>
-                            </div>
+                                 alt="Gráfico de notas por tipo de sala">
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Sentimentos - Específico -->
-            <div th:if="${tipoRelatorio == 'sentimentos'}" class="col-12">
+                <!-- Sentimentos -->
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Sentimentos dos Comentários</h5>
                         <div class="text-center">
                             <img th:src="@{/relatorios/imagens/sentimentos.png(v=${versaoGraficos})}"
                                  class="img-fluid rounded shadow"
-                                 alt="Gráfico de sentimentos"
-                                 style="max-height: 500px;">
-                            <div class="mt-2">
-                                <small class="text-muted">
-                                    <i class="bi bi-filter"></i>
-                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
-                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
-                                </small>
-                            </div>
+                                 alt="Gráfico de sentimentos">
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Avaliações por Filme - Específico -->
-            <div th:if="${tipoRelatorio == 'avaliacoes_por_filme'}" class="col-12">
+                <!-- Avaliações por Filme -->
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Avaliações por Filme</h5>
                         <div class="text-center">
                             <img th:src="@{/relatorios/imagens/avaliacoes_por_filme.png(v=${versaoGraficos})}"
                                  class="img-fluid rounded shadow"
-                                 alt="Gráfico de avaliações por filme"
-                                 style="max-height: 500px;">
-                            <div class="mt-2">
-                                <small class="text-muted">
-                                    <i class="bi bi-filter"></i>
-                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
-                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
-                                </small>
-                            </div>
+                                 alt="Gráfico de avaliações por filme">
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Avaliações por Faixa Etária - Específico -->
-            <div th:if="${tipoRelatorio == 'avaliacoes_por_faixa'}" class="col-12">
+                <!-- Avaliações por Faixa Etária -->
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Avaliações por Faixa Etária</h5>
                         <div class="text-center">
                             <img th:src="@{/relatorios/imagens/avaliacoes_por_faixa.png(v=${versaoGraficos})}"
                                  class="img-fluid rounded shadow"
-                                 alt="Gráfico de avaliações por faixa etária"
-                                 style="max-height: 500px;">
-                            <div class="mt-2">
-                                <small class="text-muted">
-                                    <i class="bi bi-filter"></i>
-                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
-                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
-                                </small>
-                            </div>
+                                 alt="Gráfico de avaliações por faixa etária">
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Avaliações por Hora do Dia - Específico -->
-            <div th:if="${tipoRelatorio == 'avaliacoes_por_hora'}" class="col-12">
+                <!-- Avaliações por Hora do Dia -->
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Avaliações por Hora do Dia</h5>
                         <div class="text-center">
                             <img th:src="@{/relatorios/imagens/avaliacoes_por_hora.png(v=${versaoGraficos})}"
                                  class="img-fluid rounded shadow"
-                                 alt="Gráfico de avaliações por hora do dia"
-                                 style="max-height: 500px;">
-                            <div class="mt-2">
-                                <small class="text-muted">
-                                    <i class="bi bi-filter"></i>
-                                    <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
-                                    <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
-                                </small>
-                            </div>
+                                 alt="Gráfico de avaliações por hora do dia">
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- RELATÓRIOS ESPECÍFICOS - Um gráfico por vez -->
+            <div th:if="${tipoRelatorio != 'completo'}" class="relatorio-especifico">
+                <!-- Médias por Critério - Específico -->
+                <div th:if="${tipoRelatorio == 'medias_criterios'}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Médias por Critério de Avaliação</h5>
+                            <div class="text-center">
+                                <img th:src="@{/relatorios/imagens/medias_criterios.png(v=${versaoGraficos})}"
+                                     class="img-fluid rounded shadow"
+                                     alt="Gráfico de médias por critério">
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-filter"></i>
+                                        <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
+                                        <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Distribuição por Cinema - Específico -->
+                <div th:if="${tipoRelatorio == 'distribuicao_cinemas'}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Distribuição de Avaliações por Cinema</h5>
+                            <div class="text-center">
+                                <img th:src="@{/relatorios/imagens/distribuicao_cinemas.png(v=${versaoGraficos})}"
+                                     class="img-fluid rounded shadow"
+                                     alt="Gráfico de distribuição por cinema">
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-filter"></i>
+                                        <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
+                                        <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Evolução Temporal - Específico -->
+                <div th:if="${tipoRelatorio == 'evolucao_temporal'}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Evolução Temporal das Avaliações</h5>
+                            <div class="text-center">
+                                <img th:src="@{/relatorios/imagens/evolucao_temporal.png(v=${versaoGraficos})}"
+                                     class="img-fluid rounded shadow"
+                                     alt="Gráfico de evolução temporal">
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-filter"></i>
+                                        <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
+                                        <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notas por Tipo de Sala - Específico -->
+                <div th:if="${tipoRelatorio == 'notas_por_sala'}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Notas por Tipo de Sala</h5>
+                            <div class="text-center">
+                                <img th:src="@{/relatorios/imagens/notas_por_sala.png(v=${versaoGraficos})}"
+                                     class="img-fluid rounded shadow"
+                                     alt="Gráfico de notas por tipo de sala">
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-filter"></i>
+                                        <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
+                                        <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sentimentos - Específico -->
+                <div th:if="${tipoRelatorio == 'sentimentos'}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Sentimentos dos Comentários</h5>
+                            <div class="text-center">
+                                <img th:src="@{/relatorios/imagens/sentimentos.png(v=${versaoGraficos})}"
+                                     class="img-fluid rounded shadow"
+                                     alt="Gráfico de sentimentos">
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-filter"></i>
+                                        <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
+                                        <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Avaliações por Filme - Específico -->
+                <div th:if="${tipoRelatorio == 'avaliacoes_por_filme'}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Avaliações por Filme</h5>
+                            <div class="text-center">
+                                <img th:src="@{/relatorios/imagens/avaliacoes_por_filme.png(v=${versaoGraficos})}"
+                                     class="img-fluid rounded shadow"
+                                     alt="Gráfico de avaliações por filme">
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-filter"></i>
+                                        <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
+                                        <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Avaliações por Faixa Etária - Específico -->
+                <div th:if="${tipoRelatorio == 'avaliacoes_por_faixa'}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Avaliações por Faixa Etária</h5>
+                            <div class="text-center">
+                                <img th:src="@{/relatorios/imagens/avaliacoes_por_faixa.png(v=${versaoGraficos})}"
+                                     class="img-fluid rounded shadow"
+                                     alt="Gráfico de avaliações por faixa etária">
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-filter"></i>
+                                        <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
+                                        <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Avaliações por Hora do Dia - Específico -->
+                <div th:if="${tipoRelatorio == 'avaliacoes_por_hora'}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Avaliações por Hora do Dia</h5>
+                            <div class="text-center">
+                                <img th:src="@{/relatorios/imagens/avaliacoes_por_hora.png(v=${versaoGraficos})}"
+                                     class="img-fluid rounded shadow"
+                                     alt="Gráfico de avaliações por hora do dia">
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-filter"></i>
+                                        <span th:if="${filtrosAplicados}">Com filtros aplicados</span>
+                                        <span th:if="${not filtrosAplicados}">Sem filtros aplicados</span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Estado Vazio -->
