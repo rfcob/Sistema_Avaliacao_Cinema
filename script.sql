@@ -101,6 +101,208 @@ CREATE TABLE Avaliacao_Criterio (
 -- POPULAÇÃO DE DADOS
 -- ================================================
 
+-- ================================================
+-- CRIAÇÃO DAS TABELAS
+-- ================================================
+
+CREATE TABLE Cinema (
+id_cinema SERIAL PRIMARY KEY,
+nome VARCHAR(100) NOT NULL,
+localizacao VARCHAR(200),
+tipo_estabelecimento VARCHAR(50),
+numero_salas INT
+);
+
+CREATE TABLE Sala (
+id_sala SERIAL PRIMARY KEY,
+capacidade INT,
+tipo_som VARCHAR(50),
+formato_exibicao VARCHAR(20),
+tecnologia VARCHAR(50),
+tipo_sala VARCHAR(50),
+id_cinema INT,
+ativo BOOLEAN DEFAULT true,
+FOREIGN KEY (id_cinema) REFERENCES Cinema(id_cinema)
+);
+
+
+CREATE TABLE Filme (
+id_filme SERIAL PRIMARY KEY,
+titulo VARCHAR(150) NOT NULL,
+duracao INT,
+genero VARCHAR(50),
+elenco TEXT,
+direcao VARCHAR(100),
+ano_producao INT
+);
+
+CREATE TABLE Cliente (
+id_cliente SERIAL PRIMARY KEY,
+nome VARCHAR(100) NOT NULL,
+cpf VARCHAR(11) UNIQUE,
+email VARCHAR(100) UNIQUE NOT NULL,
+data_nascimento DATE,
+telefone VARCHAR(20),
+cidade VARCHAR(80),
+estado VARCHAR(2),
+ativo BOOLEAN DEFAULT true
+);
+
+CREATE TABLE Sessao (
+id_sessao SERIAL PRIMARY KEY,
+data_inicio TIMESTAMP,
+data_fim TIMESTAMP,
+preco DECIMAL(6,2),
+idioma VARCHAR(50),
+id_sala INT,
+id_filme INT,
+ativo BOOLEAN DEFAULT true,
+FOREIGN KEY (id_sala) REFERENCES Sala(id_sala),
+FOREIGN KEY (id_filme) REFERENCES Filme(id_filme)
+);
+
+-- Perguntas/Critérios de avaliação
+CREATE TABLE Criterio (
+id_criterio SERIAL PRIMARY KEY,
+nome_criterio VARCHAR(100),
+descricao TEXT
+);
+
+-- Avaliações (corrigida e enriquecida)
+CREATE TABLE Avaliacao (
+id_avaliacao SERIAL PRIMARY KEY,
+data_avaliacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+comentario TEXT,
+comentario_anonimo BOOLEAN DEFAULT FALSE,
+nota_geral DECIMAL(3,1),
+id_cliente INT NOT NULL,
+id_sessao INT NOT NULL,
+origem_avaliacao VARCHAR(50),              -- canal: app, site, totem
+tipo_sala VARCHAR(50),                     -- VIP, IMAX, 3D
+sentimento_comentario VARCHAR(20),         -- positivo, neutro, negativo
+status_avaliacao VARCHAR(20) DEFAULT 'Ativa', -- ativa, moderada, excluída
+data_insercao TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- auditoria
+
+FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente),
+FOREIGN KEY (id_sessao) REFERENCES Sessao(id_sessao),
+CONSTRAINT unica_avaliacao UNIQUE (id_cliente, id_sessao)
+);
+
+-- Respostas por critério
+CREATE TABLE Avaliacao_Criterio (
+        id_avaliacao_criterio SERIAL PRIMARY KEY,
+        nota DECIMAL(3,1),
+        id_avaliacao INT NOT NULL,
+        id_criterio INT NOT NULL,
+        FOREIGN KEY (id_avaliacao) REFERENCES Avaliacao(id_avaliacao),
+        FOREIGN KEY (id_criterio) REFERENCES Criterio(id_criterio)
+);
+
+-- ================================================
+-- POPULAÇÃO DE DADOS
+-- ================================================
+
+-- ================================================
+-- CRIAÇÃO DAS TABELAS
+-- ================================================
+
+CREATE TABLE Cinema (
+id_cinema SERIAL PRIMARY KEY,
+nome VARCHAR(100) NOT NULL,
+localizacao VARCHAR(200),
+tipo_estabelecimento VARCHAR(50),
+numero_salas INT
+);
+
+CREATE TABLE Sala (
+id_sala SERIAL PRIMARY KEY,
+capacidade INT,
+tipo_som VARCHAR(50),
+formato_exibicao VARCHAR(20),
+tecnologia VARCHAR(50),
+tipo_sala VARCHAR(50),
+id_cinema INT,
+ativo BOOLEAN DEFAULT true,
+FOREIGN KEY (id_cinema) REFERENCES Cinema(id_cinema)
+);
+
+
+CREATE TABLE Filme (
+id_filme SERIAL PRIMARY KEY,
+titulo VARCHAR(150) NOT NULL,
+duracao INT,
+genero VARCHAR(50),
+elenco TEXT,
+direcao VARCHAR(100),
+ano_producao INT
+);
+
+CREATE TABLE Cliente (
+id_cliente SERIAL PRIMARY KEY,
+nome VARCHAR(100) NOT NULL,
+cpf VARCHAR(11) UNIQUE,
+email VARCHAR(100) UNIQUE NOT NULL,
+data_nascimento DATE,
+telefone VARCHAR(20),
+cidade VARCHAR(80),
+estado VARCHAR(2),
+ativo BOOLEAN DEFAULT true
+);
+
+CREATE TABLE Sessao (
+id_sessao SERIAL PRIMARY KEY,
+data_inicio TIMESTAMP,
+data_fim TIMESTAMP,
+preco DECIMAL(6,2),
+idioma VARCHAR(50),
+id_sala INT,
+id_filme INT,
+ativo BOOLEAN DEFAULT true,
+FOREIGN KEY (id_sala) REFERENCES Sala(id_sala),
+FOREIGN KEY (id_filme) REFERENCES Filme(id_filme)
+);
+
+-- Perguntas/Critérios de avaliação
+CREATE TABLE Criterio (
+id_criterio SERIAL PRIMARY KEY,
+nome_criterio VARCHAR(100),
+descricao TEXT
+);
+
+-- Avaliações (corrigida e enriquecida)
+CREATE TABLE Avaliacao (
+id_avaliacao SERIAL PRIMARY KEY,
+data_avaliacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+comentario TEXT,
+comentario_anonimo BOOLEAN DEFAULT FALSE,
+nota_geral DECIMAL(3,1),
+id_cliente INT NOT NULL,
+id_sessao INT NOT NULL,
+origem_avaliacao VARCHAR(50),              -- canal: app, site, totem
+tipo_sala VARCHAR(50),                     -- VIP, IMAX, 3D
+sentimento_comentario VARCHAR(20),         -- positivo, neutro, negativo
+status_avaliacao VARCHAR(20) DEFAULT 'Ativa', -- ativa, moderada, excluída
+data_insercao TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- auditoria
+
+FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente),
+FOREIGN KEY (id_sessao) REFERENCES Sessao(id_sessao),
+CONSTRAINT unica_avaliacao UNIQUE (id_cliente, id_sessao)
+);
+
+-- Respostas por critério
+CREATE TABLE Avaliacao_Criterio (
+        id_avaliacao_criterio SERIAL PRIMARY KEY,
+        nota DECIMAL(3,1),
+        id_avaliacao INT NOT NULL,
+        id_criterio INT NOT NULL,
+        FOREIGN KEY (id_avaliacao) REFERENCES Avaliacao(id_avaliacao),
+        FOREIGN KEY (id_criterio) REFERENCES Criterio(id_criterio)
+);
+
+-- ================================================
+-- POPULAÇÃO DE DADOS
+-- ================================================
+
 -- 3 Cinemas da mesma rede
 INSERT INTO Cinema (nome, localizacao, tipo_estabelecimento, numero_salas) VALUES
 ('Cine Rede Plaza', 'Shopping Plaza - Curitiba', 'shopping', 8),

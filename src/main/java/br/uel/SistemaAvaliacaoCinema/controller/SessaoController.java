@@ -32,10 +32,7 @@ public class SessaoController {
                          @RequestParam(value = "hora", required = false) String hora) {
 
         model.addAttribute("sessoes", sessaoService.listarSessoes(cinemaId, data, hora));
-
-        // Para o filtro de cinemas, usamos o metodo padrão (sobrecarga) ou passamos null
         model.addAttribute("cinemas", cinemaService.listarCinemas());
-
         model.addAttribute("filtroCinemaId", cinemaId);
         model.addAttribute("filtroData", data);
         model.addAttribute("filtroHora", hora);
@@ -46,13 +43,8 @@ public class SessaoController {
     @GetMapping("/novo")
     public String novo(Model model) {
         model.addAttribute("sessao", new Sessao());
-
-        // CORREÇÃO AQUI: Passamos null, null para listar TODAS as salas sem filtrar
         model.addAttribute("salas", salaService.listarSalas(null, null));
-
-        // CORREÇÃO AQUI: Passamos null para listar TODOS os filmes sem filtrar
         model.addAttribute("filmes", filmeService.listarFilmes(null));
-
         model.addAttribute("tituloPagina", "Cadastrar Nova Sessão");
         return "sessoes/form_sessoes";
     }
@@ -74,11 +66,8 @@ public class SessaoController {
         try {
             Sessao sessao = sessaoService.buscarPorId(id);
             model.addAttribute("sessao", sessao);
-
-            // CORREÇÃO AQUI TAMBÉM: Passamos null nos parâmetros de busca
             model.addAttribute("salas", salaService.listarSalas(null, null));
             model.addAttribute("filmes", filmeService.listarFilmes(null));
-
             model.addAttribute("tituloPagina", "Editar Sessão: " + id);
             return "sessoes/form_sessoes";
         } catch (RuntimeException e) {

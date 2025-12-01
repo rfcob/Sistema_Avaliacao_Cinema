@@ -9,7 +9,7 @@ public class Sessao {
     private LocalDateTime dataInicio;
     private LocalDateTime dataFim;
     private Double preco;
-    private LocalTime hora;
+    // REMOVIDO: private LocalTime hora; - hora já está em dataInicio
     private String idioma;
     private Long idSala;   // FK
     private Long idFilme;  // FK
@@ -32,8 +32,12 @@ public class Sessao {
     public Double getPreco() { return preco; }
     public void setPreco(Double preco) { this.preco = preco; }
 
-    public LocalTime getHora() { return hora; }
-    public void setHora(LocalTime hora) { this.hora = hora; }
+    // Metodo para obter a hora a partir de dataInicio (para exibição)
+    public LocalTime getHora() {
+        return dataInicio != null ? dataInicio.toLocalTime() : null;
+    }
+
+    // Não precisa de setter para hora
 
     public String getIdioma() { return idioma; }
     public void setIdioma(String idioma) { this.idioma = idioma; }

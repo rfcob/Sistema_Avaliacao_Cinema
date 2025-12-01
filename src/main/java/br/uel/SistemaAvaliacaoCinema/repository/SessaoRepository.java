@@ -1,14 +1,16 @@
+
 package br.uel.SistemaAvaliacaoCinema.repository;
 
 import br.uel.SistemaAvaliacaoCinema.model.Sessao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -27,10 +29,14 @@ public class SessaoRepository {
             Sessao s = new Sessao();
             s.setIdSessao(rs.getLong("id_sessao"));
             s.setDataInicio(rs.getTimestamp("data_inicio").toLocalDateTime());
-            s.setDataFim(rs.getTimestamp("data_fim").toLocalDateTime());
+
+            // Verifica se data_fim não é null
+            Timestamp dataFim = rs.getTimestamp("data_fim");
+            if (dataFim != null) {
+                s.setDataFim(dataFim.toLocalDateTime());
+            }
+
             s.setPreco(rs.getDouble("preco"));
-            s.setDataInicio(rs.getTimestamp("data_inicio").toLocalDateTime());
-            s.setDataFim(rs.getTimestamp("data_fim").toLocalDateTime());
             s.setIdioma(rs.getString("idioma"));
             s.setIdSala(rs.getLong("id_sala"));
             s.setIdFilme(rs.getLong("id_filme"));
@@ -39,7 +45,9 @@ public class SessaoRepository {
             try {
                 s.setNomeSala(rs.getString("tipo_sala"));
                 s.setTituloFilme(rs.getString("titulo"));
-            } catch (SQLException e) {}
+            } catch (SQLException e) {
+                // Ignora se não existir nas queries que não fazem JOIN
+            }
             return s;
         }
     }
@@ -65,8 +73,9 @@ public class SessaoRepository {
             params.add(LocalDate.parse(data));
         }
         if (hora != null && !hora.isEmpty()) {
-            sql.append("AND se.hora = ? ");
-            params.add(LocalTime.parse(hora));
+            // Filtra pela hora do campo data_inicio
+            sql.append("AND EXTRACT(HOUR FROM se.data_inicio) = ? ");
+            params.add(Integer.parseInt(hora.split(":")[0]));
         }
 
         sql.append("ORDER BY se.data_inicio");
@@ -88,30 +97,54 @@ public class SessaoRepository {
         }
     }
 
-    public int save(Sessao s) {
-        String sql = "INSERT INTO Sessao (data_inicio, data_fim, preco, hora, idioma, id_sala, id_filme, ativo) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, true)";
-        return jdbcTemplate.update(sql,
-                s.getDataInicio(),
-                s.getDataFim(),
-                s.getPreco(),
-                s.getHora(),
-                s.getIdioma(),
-                s.getIdSala(),
-                s.getIdFilme());
+    public void save(Sessao s) {
+        if (s.getIdSessao() == null) {
+            // INSERT - sem coluna 'hora'
+            String sql = "INSERT INTO Sessao (data_inicio, data_fim, preco, idioma, id_sala, id_filme, ativo) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setTimestamp(1, Timestamp.valueOf(s.getDataInicio()));
+
+                // Data fim pode ser null
+                if (s.getDataFim() != null) {
+                    ps.setTimestamp(2, Timestamp.valueOf(s.getDataFim()));
+                } else {
+                    ps.setNull(2, Types.TIMESTAMP);
+                }
+
+                ps.setDouble(3, s.getPreco());
+                ps.setString(4, s.getIdioma());
+                ps.setLong(5, s.getIdSala());
+                ps.setLong(6, s.getIdFilme());
+                ps.setBoolean(7, s.isAtivo());
+                return ps;
+            }, keyHolder);
+
+            // Obtém o ID gerado
+            Number key = keyHolder.getKey();
+            if (key != null) {
+                s.setIdSessao(key.longValue());
+            }
+        } else {
+            // UPDATE
+            update(s);
+        }
     }
 
     public int update(Sessao s) {
-        String sql = "UPDATE Sessao SET data_inicio=?, data_fim=?, preco=?, hora=?, idioma=?, id_sala=?, id_filme=? " +
+        String sql = "UPDATE Sessao SET data_inicio=?, data_fim=?, preco=?, idioma=?, id_sala=?, id_filme=?, ativo=? " +
                 "WHERE id_sessao=?";
         return jdbcTemplate.update(sql,
                 s.getDataInicio(),
                 s.getDataFim(),
                 s.getPreco(),
-                s.getHora(),
                 s.getIdioma(),
                 s.getIdSala(),
                 s.getIdFilme(),
+                s.isAtivo(),
                 s.getIdSessao());
     }
 
