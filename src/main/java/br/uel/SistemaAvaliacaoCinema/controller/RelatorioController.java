@@ -202,7 +202,7 @@ public class RelatorioController {
     }
 
     /**
-     * Método principal para executar Python
+     * Metodo principal para executar Python
      */
     private boolean executarScriptPython(String arquivoJson, String tipoRelatorio) {
         logger.info("Iniciando execução do script Python");
