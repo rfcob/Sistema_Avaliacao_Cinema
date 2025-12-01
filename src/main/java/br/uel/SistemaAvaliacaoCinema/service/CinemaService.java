@@ -112,5 +112,7 @@ public class CinemaService {
     public void deletarCinema(Long id) {
         cinemaRepository.deleteById(id);
     }
+
+
 }
 
